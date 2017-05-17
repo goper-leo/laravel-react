@@ -33,7 +33,6 @@
       <script src="js/bootstrap.min.js"></script>
       <script src="vendors/matchHeight/jquery.matchHeight.js"></script>
       <script src="vendors/easydropdown/jquery.easydropdown.js"></script>
-
       <script src="vendors/bootstrap-sass/bootstrap.min.js"></script>
       @yield('inline_scripts')
 

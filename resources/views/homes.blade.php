@@ -38,4 +38,5 @@
   <script type="text/javascript" src="vendors/lightslider/js/lightslider.min.js"></script>
   <script src="vendors/maplace-js/maplace.js"></script>
   <script type="text/javascript" src="js/app.js"></script>
+  <script type="text/javascript" src="js/test.js"></script>
 @endsection
