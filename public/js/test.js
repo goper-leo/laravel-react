@@ -63,64 +63,51 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 4);
+/******/ 	return __webpack_require__(__webpack_require__.s = 5);
 /******/ })
 /************************************************************************/
-/******/ ([
-/* 0 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/******/ ({
 
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__modules_Main__ = __webpack_require__(3);
-
-
-
-
-new __WEBPACK_IMPORTED_MODULE_0__modules_Main__["a" /* default */]();
-
-/***/ }),
-/* 1 */,
-/* 2 */
+/***/ 1:
 /***/ (function(module, exports) {
 
-// removed by extract-text-webpack-plugin
+var Tweet = React.createClass({
+  displayName: 'Tweet',
+
+  getInitialState: function getInitialState() {
+    return {
+      alltweets: []
+    };
+  },
+  componentDidMount: function componentDidMount() {},
+  _getTweets: function _getTweets() {
+    $.get('/tweets/all', function (data) {
+      this.setState({ alltweets: data });
+    }.bind(this));
+  },
+  render: function render() {
+    var handleTweets = this.state.alltweets.map(function (twt) {
+      return React.createElement(TweetBanner, { key: twt.id, id: twt.id, tweet: twt.tweet });
+    });
+    return React.createElement(
+      'div',
+      null,
+      React.createElement(TwitterHeader, null),
+      React.createElement(TwitterPoster, null),
+      this._getTweets(),
+      handleTweets
+    );
+  }
+});
 
 /***/ }),
-/* 3 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-"use strict";
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Main = function () {
-    function Main() {
-        _classCallCheck(this, Main);
-
-        this.inititalize();
-    }
-
-    _createClass(Main, [{
-        key: 'inititalize',
-        value: function inititalize() {
-            alert('Here');
-        }
-    }]);
-
-    return Main;
-}();
-
-/* harmony default export */ __webpack_exports__["a"] = (Main);
-
-/***/ }),
-/* 4 */
+/***/ 5:
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(0);
-module.exports = __webpack_require__(2);
+module.exports = __webpack_require__(1);
 
 
 /***/ })
-/******/ ]);
+
+/******/ });
