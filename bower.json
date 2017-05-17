@@ -13,5 +13,14 @@
     "bower_components",
     "test",
     "tests"
-  ]
+  ],
+  "dependencies": {
+    "easydropdown": "^2.1.4",
+    "moment": "^2.18.1",
+    "maplace-js": "^0.2.10",
+    "bootstrap-sass": "^3.3.7",
+    "font-awesome": "^4.7.0",
+    "moment-timezone": "^0.5.13",
+    "lightslider": "^1.1.6"
+  }
 }

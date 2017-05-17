@@ -1,0 +1,44 @@
+.footer-button {
+  border-radius: 0px !important;
+  position: fixed;
+  right: 0px;
+  z-index: 1035;
+  bottom: 0px;
+  padding: 15px 20px;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0px;
+  right: 0px;
+  left: 0px;
+  height: 250px;
+  background-color: $body-bg;
+  z-index: 1036;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  border-top: 1px solid $brand-gray;
+
+  .footer-portion {
+    padding-left: 30px;
+
+    ul {
+      list-style: none;
+
+      li {
+        padding-top: 5px;
+        a {
+          color: $text-color;
+        }
+      }
+    }
+  }
+
+  .close-footer-btn {
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    padding: 15px 20px;
+  }
+
+}

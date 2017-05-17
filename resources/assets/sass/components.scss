@@ -1,0 +1,52 @@
+.item {
+  margin-bottom: 30px;
+  .item-image {
+    position: relative;
+
+    img {
+      width: 100%;
+    }
+
+    .save-item {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      z-index: 10;
+      color: $brand-light-gray;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+
+  .item-details {
+    h4, p {
+      margin-bottom: 0px;
+    }
+  }
+
+  .item-review {
+    .fa {
+      color: $brand-primary;
+    }
+  }
+}
+
+.loading {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 100000;
+  background-color: rgba(0,0,0,0.5);
+  right: 0px;
+  bottom: 0px;
+  text-align: center;
+
+  i {
+    position: absolute;
+    bottom: 202px;
+    color: #ffffff;
+    font-size: 40px;
+  }
+}

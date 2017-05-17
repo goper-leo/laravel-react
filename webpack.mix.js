@@ -1,4 +1,52 @@
-"use strict";
+class Pathfinder {
+
+    bower(path) {
+        return 'bower_components/' + path;
+    }
+
+    node(path) {
+        return 'node_modules/' + path;
+    }
+
+    resources(path) {
+        return 'resources/assets/' + path;
+    }
+
+    sass(path) {
+        return this.resources('sass/' + path);
+    }
+
+    js(path) {
+        return this.resources('js/' + path);
+    }
+
+    fonts(path) {
+        return this.resources('fonts/' + path);
+    }
+
+    images(path) {
+        return this.resources('images/' + path);
+    }
+
+    libs(path) {
+        return this.resources('library/' + path);
+    }
+
+    public(path) {
+        return 'public/' + path;
+    }
+
+    assets(path) {
+        return this.public('assets/' + path);
+    }
+
+    vendors(path) {
+        return this.public('vendors/' + path);
+    }
+
+}
+
+let paths = new Pathfinder();
 
 const { mix } = require('laravel-mix');
 
@@ -13,6 +61,22 @@ const { mix } = require('laravel-mix');
  |
  */
 
-mix.js('resources/assets/js/app.js', 'public/js')
-   .react('resources/assets/js/test.js', 'public/js')
-   .sass('resources/assets/sass/app.scss', 'public/css');
+mix.js(paths.js('app.js'), paths.public('js'))
+   .react(paths.js('test.js'), paths.public('js'));
+
+mix.sass(paths.sass('app.scss'), paths.public('css'))
+   .sass(paths.sass('bootstrap.scss'), paths.public('css'));
+
+//** vendors
+mix.copy(paths.bower('bootstrap-sass/assets/javascripts/'), paths.vendors('bootstrap-sass'), false);
+mix.copy(paths.bower('bootstrap-sass/assets/javascripts/bootstrap.min.js'), paths.public('js'));
+
+  mix.copy(paths.bower('font-awesome/fonts/'), paths.public('fonts'));
+  mix.copy(paths.bower('moment/min/'), paths.vendors('moment'));
+  mix.copy(paths.bower('jquery/dist/jquery.min.js'), paths.vendors(''));
+  mix.copy(paths.bower('moment-timezone/builds/'), paths.vendors('moment-timezone'));
+  mix.copy(paths.bower('matchHeight/jquery.matchHeight.js'), paths.vendors('matchHeight'));
+  mix.copy(paths.bower('maplace-js/src/'), paths.vendors('maplace-js'));
+  mix.copy(paths.bower('easydropdown/src/jquery.easydropdown.js'), paths.vendors('easydropdown'));
+  mix.copy(paths.bower('easydropdown/themes/'), paths.vendors('easydropdown'));
+  mix.copy(paths.bower('lightslider/dist/'), paths.vendors('lightslider'));

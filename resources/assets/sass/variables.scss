@@ -1,6 +1,6 @@
 
 // Body
-$body-bg: #f5f8fa;
+$body-bg: #ffffff;
 
 // Borders
 $laravel-border-color: darken($body-bg, 10%);
@@ -16,8 +16,10 @@ $brand-success: #2ab27b;
 $brand-warning: #cbb956;
 $brand-danger: #bf5329;
 
+$brand-gray: #8c8c8c;
+$brand-light-gray: #e7e7e7;
+
 // Typography
-$icon-font-path: "~bootstrap-sass/assets/fonts/bootstrap/";
 $font-family-sans-serif: "Raleway", sans-serif;
 $font-size-base: 14px;
 $line-height-base: 1.6;
