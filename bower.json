@@ -1,0 +1,17 @@
+{
+  "name": "onerent-laravel-react",
+  "description": "",
+  "main": "",
+  "authors": [
+    "goper <goper.zosa@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/goper-leo/onerent-laravel-react",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
