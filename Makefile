@@ -11,6 +11,7 @@ setup:
 	sudo chmod -R 777 ./bootstrap/cache/
 	composer install
 	npm install
+	bower install
 	php artisan migrate:refresh --seed
 	npm run dev
 	npm run watch

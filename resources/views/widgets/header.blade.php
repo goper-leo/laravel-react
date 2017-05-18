@@ -60,8 +60,8 @@
   </div>
 
   {{-- Third Layer --}}
-  <div class="container-fluid third-layer">
-    <ul class="nav navbar-nav navbar-left">
+  <div class="container-fluid third-layer" id="third-layer">
+    {{-- <ul class="nav navbar-nav navbar-left">
       <li class="dropdown">
         <a id="dLabel"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Room Type
@@ -103,9 +103,7 @@
 
       </li>
 
-    </ul>
+    </ul> --}}
   </div>
-  <div id="test-append">
-    Test
-  </div>
+  
 </nav>

@@ -1,53 +1,43 @@
-import React from 'react';
+import React, { component } from 'react';
 import ReactDom from 'react-dom';
+
+import Room from './components/Room';
 
 class Navheader extends React.Component {
 
+
+   handleClick = (e) => {
+
+   };
+
   render() {
     return (
-      <div className="shopping-list">
-        <h1>Shopping List for {this.props.name}</h1>
-        <ul>
-          <li>Instagram</li>
-          <li>WhatsApp</li>
-          <li>Oculus</li>
+        <ul className="nav navbar-nav navbar-left">
+          <Room />
+
+          <li className="dropdown">
+            <a>
+              Instant Book
+              <span className="caret"></span>
+            </a>
+            <div className="dropdown-menu" aria-labelledby="dLabel">
+              asdasd
+            </div>
+          </li>
+          <li className="dropdown">
+            <a>
+              More Filters
+              <span className="caret"></span>
+            </a>
+            <div className="dropdown-menu" aria-labelledby="dLabel">
+              asdasd
+            </div>
+          </li>
         </ul>
-      </div>
     );
   }
 
 }
 
-export default Navheader;
 
-ReactDom.render(<Navheader />, document.getElementById('test-append'));
-
-// var Tweet = React.createClass({
-//   	getInitialState: function() {
-//   		return {
-//   			alltweets: []
-//   		};
-//   	},
-//   	componentDidMount: function() {
-//
-//   	},
-//   	_getTweets: function() {
-//   		$.get('/tweets/all',function(data) {
-//   			this.setState({ alltweets: data });
-//   		}.bind(this));
-//   	},
-//     render: function() {
-// 		var handleTweets = this.state.alltweets.map(function(twt) {
-// 			return <TweetBanner key={twt.id} id={twt.id} tweet={twt.tweet} />
-// 		});
-// 		return (
-// 			<div>
-// 			  <TwitterHeader />
-// 			  <TwitterPoster />
-//
-// 			  {this._getTweets()}
-// 			  {handleTweets}
-// 			</div>
-// 		);
-//     }
-//   });
+ReactDom.render(<Navheader />, document.getElementById('third-layer'));

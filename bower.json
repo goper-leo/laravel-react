@@ -21,6 +21,7 @@
     "bootstrap-sass": "^3.3.7",
     "font-awesome": "^4.7.0",
     "moment-timezone": "^0.5.13",
-    "lightslider": "^1.1.6"
+    "lightslider": "^1.1.6",
+    "matchHeight": "matchheight#^0.7.2"
   }
 }
