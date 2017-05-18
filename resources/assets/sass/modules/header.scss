@@ -81,6 +81,10 @@ nav {
         &:hover {
           background-color: $brand-light-gray !important;
         }
+
+        .dropdown-menu {
+            height: 120px;
+        }
       }
     }
   }

@@ -1,9 +1,10 @@
-import React, { component } from 'react';
+import React, { Component } from 'react';
 import ReactDom from 'react-dom';
 
 import Room from './components/Room';
+import Price from './components/Price';
 
-class Navheader extends React.Component {
+class Navheader extends Component {
 
 
    handleClick = (e) => {
@@ -14,25 +15,7 @@ class Navheader extends React.Component {
     return (
         <ul className="nav navbar-nav navbar-left">
           <Room />
-
-          <li className="dropdown">
-            <a>
-              Instant Book
-              <span className="caret"></span>
-            </a>
-            <div className="dropdown-menu" aria-labelledby="dLabel">
-              asdasd
-            </div>
-          </li>
-          <li className="dropdown">
-            <a>
-              More Filters
-              <span className="caret"></span>
-            </a>
-            <div className="dropdown-menu" aria-labelledby="dLabel">
-              asdasd
-            </div>
-          </li>
+          <Price />
         </ul>
     );
   }
