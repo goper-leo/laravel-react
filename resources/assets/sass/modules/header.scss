@@ -83,7 +83,38 @@ nav {
         }
 
         .dropdown-menu {
-            height: 120px;
+            height: auto;
+            width: 320px;
+            padding: 15px;
+
+            ul.list-group {
+                position: relative;
+                li {
+                    font-size: 14px;
+                    border-color: transparent;
+                    position: relative;
+
+                    input {
+                        position: absolute;
+                        top: 50%;
+                        margin-top: -9px;
+                        right: 10px;
+                    }
+                }
+
+                li.inline-list {
+                    display: inline-block;
+
+                    a {
+                        color: $brand-success;
+
+                        &:hover {
+                            text-decoration: none;
+                        }
+                    }
+                }
+            }
+
         }
       }
     }
