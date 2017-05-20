@@ -9676,101 +9676,47 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Roomfilter = function (_Component) {
-    _inherits(Roomfilter, _Component);
+var List = function (_Component) {
+    _inherits(List, _Component);
 
-    function Roomfilter() {
+    function List() {
         var _ref;
 
         var _temp, _this, _ret;
 
-        _classCallCheck(this, Roomfilter);
+        _classCallCheck(this, List);
 
         for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
             args[_key] = arguments[_key];
         }
 
-        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Roomfilter.__proto__ || Object.getPrototypeOf(Roomfilter)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
-            items: [{
-                label: 'Entire home',
-                details: 'Lorem Ipsum set et dolor'
-            }, {
-                label: 'Entire home',
-                details: 'Lorem Ipsum set et dolor'
-            }]
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = List.__proto__ || Object.getPrototypeOf(List)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+            isChecked: false
         }, _this.handleClick = function () {}, _temp), _possibleConstructorReturn(_this, _ret);
     }
 
-    _createClass(Roomfilter, [{
+    _createClass(List, [{
         key: 'render',
         value: function render() {
+            var list = this.props.list;
+            var isChecked = this.state.isChecked;
+
+
             return _react2.default.createElement(
-                'div',
-                { className: 'dropdown-menu room-filter-dropdown' },
+                'li',
+                { className: 'list-group-item' },
+                list.label,
                 _react2.default.createElement(
-                    'ul',
-                    { className: 'list-group' },
-                    _react2.default.createElement(
-                        'li',
-                        { className: 'list-group-item' },
-                        'Entire home',
-                        _react2.default.createElement(
-                            'p',
-                            { className: 'help-block' },
-                            'Lorem ipsum sit el '
-                        ),
-                        _react2.default.createElement('input', { type: 'checkbox', className: '', id: 'entire-home' })
-                    ),
-                    _react2.default.createElement(
-                        'li',
-                        { className: 'list-group-item' },
-                        'Private room',
-                        _react2.default.createElement(
-                            'p',
-                            { className: 'help-block' },
-                            'Lorem ipsum sit el '
-                        ),
-                        _react2.default.createElement('input', { type: 'checkbox', className: '', id: 'private-room' })
-                    ),
-                    _react2.default.createElement(
-                        'li',
-                        { className: 'list-group-item' },
-                        'Shared room',
-                        _react2.default.createElement(
-                            'p',
-                            { className: 'help-block' },
-                            'Lorem ipsum sit el '
-                        ),
-                        _react2.default.createElement('input', { type: 'checkbox', className: '', id: 'shared-room' })
-                    )
+                    'p',
+                    { className: 'help-block' },
+                    list.details
                 ),
-                _react2.default.createElement(
-                    'ul',
-                    { className: 'list-group' },
-                    _react2.default.createElement(
-                        'li',
-                        { className: 'inline-list' },
-                        _react2.default.createElement(
-                            'a',
-                            { href: '#' },
-                            'Cancel'
-                        )
-                    ),
-                    _react2.default.createElement(
-                        'li',
-                        { className: 'inline-list pull-right' },
-                        _react2.default.createElement(
-                            'a',
-                            { href: '#' },
-                            'Apply'
-                        )
-                    )
-                )
+                _react2.default.createElement('input', { type: 'checkbox', checked: isChecked })
             );
         }
     }]);
 
-    return Roomfilter;
+    return List;
 }(_react.Component);
 
 var Room = function (_Component2) {
@@ -9787,7 +9733,22 @@ var Room = function (_Component2) {
             args[_key2] = arguments[_key2];
         }
 
-        return _ret2 = (_temp2 = (_this2 = _possibleConstructorReturn(this, (_ref2 = Room.__proto__ || Object.getPrototypeOf(Room)).call.apply(_ref2, [this].concat(args))), _this2), _this2.state = { open: false }, _this2.handleClick = function (e) {
+        return _ret2 = (_temp2 = (_this2 = _possibleConstructorReturn(this, (_ref2 = Room.__proto__ || Object.getPrototypeOf(Room)).call.apply(_ref2, [this].concat(args))), _this2), _this2.state = {
+            open: false,
+            items: [{
+                label: 'Entire home',
+                details: 'Lorem Ipsum set et dolor',
+                id: 'entire-home'
+            }, {
+                label: 'Private room',
+                details: 'Lorem Ipsum set et dolor',
+                id: 'private-room'
+            }, {
+                label: 'Shared room',
+                details: 'Lorem Ipsum set et dolor',
+                id: 'shared-room'
+            }]
+        }, _this2.handleClick = function (e) {
             var value = false;
 
             if (_reactDom2.default.findDOMNode(_this2).contains(e.target)) {
@@ -9799,6 +9760,10 @@ var Room = function (_Component2) {
             });
         }, _this2.componentDidMount = function () {
             window.addEventListener('click', _this2.handleClick, false);
+        }, _this2.createList = function (list) {
+            return _react2.default.createElement(List, { key: list.id, list: list });
+        }, _this2.createAllListItems = function () {
+            return _this2.state.items.map(_this2.createList);
         }, _temp2), _possibleConstructorReturn(_this2, _ret2);
     }
 
@@ -9811,6 +9776,7 @@ var Room = function (_Component2) {
     }, {
         key: 'render',
         value: function render() {
+
             return _react2.default.createElement(
                 'li',
                 { className: 'dropdown ' + (this.state.open == true ? 'open' : ''), onClick: this.handleClick },
@@ -9820,7 +9786,37 @@ var Room = function (_Component2) {
                     'Room Type',
                     _react2.default.createElement('span', { className: 'caret' })
                 ),
-                _react2.default.createElement(Roomfilter, null)
+                _react2.default.createElement(
+                    'div',
+                    { className: 'dropdown-menu room-filter-dropdown' },
+                    _react2.default.createElement(
+                        'ul',
+                        { className: 'list-group' },
+                        this.createAllListItems()
+                    ),
+                    _react2.default.createElement(
+                        'ul',
+                        { className: 'list-group' },
+                        _react2.default.createElement(
+                            'li',
+                            { className: 'inline-list' },
+                            _react2.default.createElement(
+                                'a',
+                                { href: '#' },
+                                'Cancel'
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'li',
+                            { className: 'inline-list pull-right' },
+                            _react2.default.createElement(
+                                'a',
+                                { href: '#' },
+                                'Apply'
+                            )
+                        )
+                    )
+                )
             );
         }
     }]);

@@ -2,60 +2,51 @@ import React, { Component } from 'react';
 import ReactDom from 'react-dom';
 
 
-class Roomfilter extends Component {
+class List extends Component {
 
     state = {
-        items: [
-            {
-                label: 'Entire home',
-                details: 'Lorem Ipsum set et dolor'
-            },
-            {
-                label: 'Entire home',
-                details: 'Lorem Ipsum set et dolor'
-            },
-        ]
-    };
+        isChecked: false,
+    }
 
     handleClick = () => {
-    	
+
     }
 
     render() {
+        const { list } = this.props;
+        const { isChecked } = this.state;
+
     	return (
-            <div className="dropdown-menu room-filter-dropdown">
-                <ul className="list-group">
-                    <li className="list-group-item">
-                        Entire home
-                        <p className="help-block">Lorem ipsum sit el </p>
-                        <input type="checkbox" className="" id="entire-home"/>
-                    </li>
-                    <li className="list-group-item">
-                        Private room
-                        <p className="help-block">Lorem ipsum sit el </p>
-                        <input type="checkbox" className="" id="private-room" />
-                    </li>
-                    <li className="list-group-item">
-                        Shared room
-                        <p className="help-block">Lorem ipsum sit el </p>
-                        <input type="checkbox" className="" id="shared-room" />
-                    </li>
-                </ul>
-                <ul className="list-group">
-                    <li className="inline-list">
-                        <a href="#">Cancel</a>
-                    </li>
-                    <li className="inline-list pull-right">
-                        <a href="#">Apply</a>
-                    </li>
-                </ul>
-            </div>
+            <li className="list-group-item">
+                {list.label}
+                <p className="help-block">{list.details}</p>
+                <input type="checkbox" checked={isChecked} />
+            </li>
         );
     }
 }
 
 export default class Room extends Component {
-    state = {open : false};
+    state = {
+        open : false,
+        items: [
+            {
+                label: 'Entire home',
+                details: 'Lorem Ipsum set et dolor',
+                id: 'entire-home'
+            },
+            {
+                label: 'Private room',
+                details: 'Lorem Ipsum set et dolor',
+                id: 'private-room'
+            },
+            {
+                label: 'Shared room',
+                details: 'Lorem Ipsum set et dolor',
+                id: 'shared-room'
+            },
+        ]
+    };
 
     handleClick = (e) => {
         let value  = false;
@@ -76,15 +67,31 @@ export default class Room extends Component {
         document.removeEventListener('click', this.handleClick, false);
     };
 
+    createList = (list) => <List key={list.id} list={list} />
+
+    createAllListItems = () => this.state.items.map(this.createList)
 
     render() {
+
         return (
             <li className={'dropdown ' + (this.state.open == true ? 'open' : '')} onClick={this.handleClick}>
                 <a>
                     Room Type
                     <span className="caret"></span>
                 </a>
-                <Roomfilter />
+                <div className="dropdown-menu room-filter-dropdown">
+                    <ul className="list-group">
+                        {this.createAllListItems()}
+                    </ul>
+                    <ul className="list-group">
+                        <li className="inline-list">
+                            <a href="#">Cancel</a>
+                        </li>
+                        <li className="inline-list pull-right">
+                            <a href="#">Apply</a>
+                        </li>
+                    </ul>
+                </div>
             </li>
         );
     }
