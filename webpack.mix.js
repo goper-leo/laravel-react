@@ -71,12 +71,12 @@ mix.sass(paths.sass('app.scss'), paths.public('css'))
 mix.copy(paths.bower('bootstrap-sass/assets/javascripts/'), paths.vendors('bootstrap-sass'), false);
 mix.copy(paths.bower('bootstrap-sass/assets/javascripts/bootstrap.min.js'), paths.public('js'));
 
-  mix.copy(paths.bower('font-awesome/fonts/'), paths.public('fonts'));
-  mix.copy(paths.bower('moment/min/'), paths.vendors('moment'));
-  mix.copy(paths.bower('jquery/dist/jquery.min.js'), paths.vendors(''));
-  mix.copy(paths.bower('moment-timezone/builds/'), paths.vendors('moment-timezone'));
-  mix.copy(paths.bower('matchHeight/jquery.matchHeight.js'), paths.vendors('matchHeight'));
-  mix.copy(paths.bower('maplace-js/src/'), paths.vendors('maplace-js'));
-  mix.copy(paths.bower('easydropdown/src/jquery.easydropdown.js'), paths.vendors('easydropdown'));
-  mix.copy(paths.bower('easydropdown/themes/'), paths.vendors('easydropdown'));
-  mix.copy(paths.bower('lightslider/dist/'), paths.vendors('lightslider'));
+mix.copy(paths.bower('font-awesome/fonts/'), paths.public('fonts'));
+mix.copy(paths.bower('moment/min/'), paths.vendors('moment'));
+mix.copy(paths.bower('jquery/dist/jquery.min.js'), paths.vendors(''));
+mix.copy(paths.bower('moment-timezone/builds/'), paths.vendors('moment-timezone'));
+mix.copy(paths.bower('matchHeight/jquery.matchHeight.js'), paths.vendors('matchHeight'));
+mix.copy(paths.bower('maplace-js/src/'), paths.vendors('maplace-js'));
+mix.copy(paths.bower('easydropdown/src/jquery.easydropdown.js'), paths.vendors('easydropdown'));
+mix.copy(paths.bower('easydropdown/themes/'), paths.vendors('easydropdown'));
+mix.copy(paths.bower('lightslider/dist/'), paths.vendors('lightslider'));

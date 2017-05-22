@@ -1,8 +1,15 @@
 import React, { Component } from 'react';
 import ReactDom from 'react-dom';
+import PropTypes from 'prop-types';
 
 export default class Price extends Component {
-    state = {open : false};
+    state = {
+        open : false,
+        currentValue : 1000,
+        step : 100,
+        max : 1000,
+        min : 10,
+    };
 
     handleClick = (e) => {
         let value  = false;
@@ -13,6 +20,10 @@ export default class Price extends Component {
 
         this.setState((prevState) => ({open: value}));
     };
+
+    changeValue = () => {
+
+    }
 
     componentDidMount = () => {
         window.addEventListener('click', this.handleClick, false);
@@ -32,6 +43,7 @@ export default class Price extends Component {
                 </a>
                 <div className="dropdown-menu">
                     Price range filter
+                    <input id="slider1" type="range" min="100" max="500" step="10" />
                 </div>
             </li>
         );
