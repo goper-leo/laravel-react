@@ -12,7 +12,7 @@ export default class Price extends Component {
         minValue : 100,
         maxValue : 2000,
         step : 100,
-        className : 'range-input',
+        className : 'range-input-container',
 
     };
 

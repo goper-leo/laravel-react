@@ -115,9 +115,13 @@ nav {
                 }
             }
 
-            .range-input > div:first-child {
+            .range-input-container div:first-child {
                 display: none;
             }
+            .range-slider div:first-child {
+                display: block !important;
+            }
+
         }
       }
     }
