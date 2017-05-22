@@ -9692,26 +9692,27 @@ var List = function (_Component) {
 
         return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = List.__proto__ || Object.getPrototypeOf(List)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
             isChecked: false
-        }, _this.handleClick = function () {}, _temp), _possibleConstructorReturn(_this, _ret);
+        }, _this.handleClick = function () {
+            _this.state.isChecked = !_this.state.isChecked;
+        }, _temp), _possibleConstructorReturn(_this, _ret);
     }
 
     _createClass(List, [{
         key: 'render',
         value: function render() {
             var list = this.props.list;
-            var isChecked = this.state.isChecked;
 
 
             return _react2.default.createElement(
                 'li',
-                { className: 'list-group-item' },
+                { className: 'list-group-item', onClick: this.handleClick },
                 list.label,
                 _react2.default.createElement(
                     'p',
                     { className: 'help-block' },
                     list.details
                 ),
-                _react2.default.createElement('input', { type: 'checkbox', checked: isChecked })
+                _react2.default.createElement('input', { type: 'checkbox', checked: this.state.isChecked })
             );
         }
     }]);

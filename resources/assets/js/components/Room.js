@@ -9,18 +9,18 @@ class List extends Component {
     }
 
     handleClick = () => {
-
+        this.state.isChecked = !this.state.isChecked;
     }
 
     render() {
         const { list } = this.props;
-        const { isChecked } = this.state;
+
 
     	return (
-            <li className="list-group-item">
+            <li className="list-group-item" onClick={this.handleClick}>
                 {list.label}
                 <p className="help-block">{list.details}</p>
-                <input type="checkbox" checked={isChecked} />
+                <input type="checkbox" checked={this.state.isChecked} />
             </li>
         );
     }
