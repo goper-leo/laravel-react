@@ -1,14 +1,19 @@
 import React, { Component } from 'react';
 import ReactDom from 'react-dom';
 import PropTypes from 'prop-types';
+import RangeSlider from 'react-dual-rangeslider';
 
 export default class Price extends Component {
     state = {
         open : false,
-        currentValue : 1000,
+        min : 100,
+        max : 2000,
+        minRange : 100,
+        minValue : 100,
+        maxValue : 2000,
         step : 100,
-        max : 1000,
-        min : 10,
+        className : 'range-input',
+
     };
 
     handleClick = (e) => {
@@ -23,6 +28,11 @@ export default class Price extends Component {
 
     changeValue = () => {
 
+    }
+
+    onRangeChange = (state)=>{
+        this.state.maxValue = state.max;
+        this.state.minValue = state.min;
     }
 
     componentDidMount = () => {
@@ -42,8 +52,24 @@ export default class Price extends Component {
                     <span className="caret"></span>
                 </a>
                 <div className="dropdown-menu">
-                    Price range filter
-                    <input id="slider1" type="range" min="100" max="500" step="10" />
+                    <RangeSlider
+                        min={this.state.min}
+                        max={this.state.max}
+                        minRange={this.state.minRange}
+                        minValue={this.state.minValue}
+                        maxValue={this.state.maxValue}
+                        onChange={this.onRangeChange}
+                        step={this.state.step}
+                        className={this.state.className}
+                    />
+                    <ul className="list-group">
+                        <li className="inline-list">
+                            <a href="#">Cancel</a>
+                        </li>
+                        <li className="inline-list pull-right">
+                            <a href="#">Apply</a>
+                        </li>
+                    </ul>
                 </div>
             </li>
         );

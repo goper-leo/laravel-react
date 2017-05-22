@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactDom from 'react-dom';
-
+import RangeSlider from 'react-dual-rangeslider';
 import Room from './components/Room';
 import Price from './components/Price';
 
@@ -16,7 +16,9 @@ class Navheader extends Component {
         <ul className="nav navbar-nav navbar-left">
           <Room />
           <Price />
+          
         </ul>
+
     );
   }
 

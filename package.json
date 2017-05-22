@@ -31,6 +31,7 @@
     "matchheight": "0.0.4",
     "prop-types": "^15.5.10",
     "react": "^15.5.4",
-    "react-dom": "^15.5.4"
+    "react-dom": "^15.5.4",
+    "react-dual-rangeslider": "^1.2.16"
   }
 }

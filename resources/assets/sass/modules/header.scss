@@ -83,7 +83,7 @@ nav {
         }
 
         .dropdown-menu {
-            height: auto;
+            height: 200px;
             width: 320px;
             padding: 15px;
 
@@ -115,6 +115,9 @@ nav {
                 }
             }
 
+            .range-input > div:first-child {
+                display: none;
+            }
         }
       }
     }
