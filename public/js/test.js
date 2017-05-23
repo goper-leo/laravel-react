@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 204);
+/******/ 	return __webpack_require__(__webpack_require__.s = 206);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -22263,11 +22263,11 @@ var _reactDom = __webpack_require__(56);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _Room = __webpack_require__(190);
+var _Room = __webpack_require__(192);
 
 var _Room2 = _interopRequireDefault(_Room);
 
-var _Price = __webpack_require__(189);
+var _Price = __webpack_require__(191);
 
 var _Price2 = _interopRequireDefault(_Price);
 
@@ -22317,7 +22317,9 @@ _reactDom2.default.render(_react2.default.createElement(Navheader, null), docume
 /* 186 */,
 /* 187 */,
 /* 188 */,
-/* 189 */
+/* 189 */,
+/* 190 */,
+/* 191 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22338,11 +22340,11 @@ var _reactDom = __webpack_require__(56);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _propTypes = __webpack_require__(198);
+var _propTypes = __webpack_require__(200);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _reactDualRangeslider = __webpack_require__(199);
+var _reactDualRangeslider = __webpack_require__(201);
 
 var _reactDualRangeslider2 = _interopRequireDefault(_reactDualRangeslider);
 
@@ -22461,7 +22463,7 @@ exports.default = Price;
 module.exports = exports['default'];
 
 /***/ }),
-/* 190 */
+/* 192 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22643,25 +22645,25 @@ exports.default = Room;
 module.exports = exports['default'];
 
 /***/ }),
-/* 191 */,
-/* 192 */,
 /* 193 */,
 /* 194 */,
-/* 195 */
+/* 195 */,
+/* 196 */,
+/* 197 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(181)();
 exports.push([module.i, ".C\\(\\#4e5b65\\) {\n  color: #4e5b65;\n}\n.D\\(ib\\) {\n  display: inline-block;\n}\n.Fl\\(end\\) {\n  float: right;\n}\n.H\\(35px\\) {\n  height: 35px;\n}\n.Pos\\(r\\) {\n  position: relative;\n}\n.Ta\\(c\\) {\n  text-align: center;\n}\n.W\\(100\\%\\) {\n  width: 100%;\n}\n", ""]);
 
 /***/ }),
-/* 196 */
+/* 198 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(181)();
 exports.push([module.i, "/*\n    Range slider styles\n    adapted from http://stackoverflow.com/questions/4753946/html5-form-slider-with-two-inputs-possible\n*/\n\n.range-slider input {\n    pointer-events: none;\n    position: absolute;\n    overflow: hidden;\n    left: 0;\n    width: 100%;\n    outline: none;\n    height: 18px;\n    margin: 0;\n    padding: 0;\n}\n\n.range-slider input[type=range] {\n    -webkit-appearance: none;\n    -moz-appearance: none;\n}\n\n.range-slider input[type=range]::-webkit-slider-thumb, .range-slider input[type=range]::-moz-range-thumb {\n}\n\n.range-slider input[type=range]::-webkit-slider-thumb {\n    -webkit-appearance: none;\n    top: -5px;\n    pointer-events: all;\n    border: 2px solid #CCD2DB;\n    box-shadow: 0px 1px 1px 0px rgba(0,0,0,0.10);\n    border-radius: 4px;\n    background-image:url(%thumb-image%);\n    background-color: white;\n    background-repeat: no-repeat;\n    background-position: 50% 50%;\n    position: relative;\n    z-index: 1;\n    outline: 0;\n    height: 15px;\n    width: 15px;\n}\n\ninput[type=range] {\n\tbackground-color: transparent;\n}\n\ninput[type=range]::-webkit-slider-runnable-track {\n    background-color: transparent;\n    height: 6px;\n    border-radius: 13px;\n    border: 1px solid #EDEEF0;\n}\n\n/* Styles for Firefox */\n.range-slider input[type=range]::-moz-range-thumb {\n    -moz-appearance: none;\n\n    pointer-events: all;\n    border: 2px solid #CCD2DB;\n    box-shadow: 0px 1px 1px 0px rgba(0,0,0,0.10);\n    border-radius: 4px;\n    background-image:url(%thumb-image%);\n    background-color: white;\n    background-repeat: no-repeat;\n    background-position: 50% 50%;\n    position: relative;\n    z-index: 100;\n    outline: 0;\n    height: 12px;\n    width: 12px;\n}\n\n.range-slider input[type=range]::-moz-range-track {\n    position: relative;\n    z-index: -1;\n    background: none transparent;\n    height: 6px;\n    border-radius: 13px;\n    border: 1px solid #EDEEF0;\n}\n\n/* extra fixes for Firefox */\n.range-slider input[type=range]:last-of-type::-moz-range-track {\n    -moz-appearance: none;\n    background: none transparent;\n    border: 0;\n}\n\n.range-slider input[type=range]::-moz-focus-outer {\n    border: 0;\n}\n\n/* selectors for internet explorer\nWe don't support IE, but fallback basic behavior works. In the\nfuture we may implement better visual support here\n\ninput[type=range]::-ms-thumb\ninput[type=range]::-ms-track\ninput[type=range]:focus::-ms-fill-lower\ninput[type=range]:focus::-ms-fill-upper\n*/\n\n", ""]);
 
 /***/ }),
-/* 197 */
+/* 199 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! @preserve
@@ -23512,7 +23514,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! @preserve
 
 
 /***/ }),
-/* 198 */
+/* 200 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -23548,7 +23550,7 @@ if (true) {
 
 
 /***/ }),
-/* 199 */
+/* 201 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23564,7 +23566,7 @@ var _react = __webpack_require__(32);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _numeral = __webpack_require__(197);
+var _numeral = __webpack_require__(199);
 
 var _numeral2 = _interopRequireDefault(_numeral);
 
@@ -23577,8 +23579,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 if (typeof window !== 'undefined') {
-    __webpack_require__(201);
-    __webpack_require__(200);
+    __webpack_require__(203);
+    __webpack_require__(202);
 }
 
 var RangeSlider = function (_React$Component) {
@@ -23721,13 +23723,13 @@ exports.default = RangeSlider;
 
 
 /***/ }),
-/* 200 */
+/* 202 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(195);
+var content = __webpack_require__(197);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(182)(content, {});
@@ -23747,13 +23749,13 @@ if(false) {
 }
 
 /***/ }),
-/* 201 */
+/* 203 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(196);
+var content = __webpack_require__(198);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(182)(content, {});
@@ -23773,9 +23775,9 @@ if(false) {
 }
 
 /***/ }),
-/* 202 */,
-/* 203 */,
-/* 204 */
+/* 204 */,
+/* 205 */,
+/* 206 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(185);

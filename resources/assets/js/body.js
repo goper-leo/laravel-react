@@ -5,6 +5,7 @@ import ItemList from './components/body/ItemList';
 import Loading from './components/Loading';
 import Map from './components/body/Map';
 
+console.log();
 class Body extends Component {
 
   render() {

@@ -60,7 +60,7 @@ const { mix } = require('laravel-mix');
  | file for the application as well as bundling up all the JS files.
  |
  */
-mix.disableNotifications();
+// mix.disableNotifications();
 
 mix.js(paths.js('app.js'), paths.public('js'))
    .react(paths.js('test.js'), paths.public('js'))
@@ -70,6 +70,9 @@ mix.sass(paths.sass('app.scss'), paths.public('css'))
    .sass(paths.sass('bootstrap.scss'), paths.public('css'));
 
 //** vendors
+mix.sass(paths.node('slick-carousel/slick/slick.scss'), paths.vendors('slick-carousel'))
+    .sass(paths.node('slick-carousel/slick/slick-theme.scss'), paths.vendors('slick-carousel'));
+
 mix.copy(paths.bower('bootstrap-sass/assets/javascripts/'), paths.vendors('bootstrap-sass'), false);
 mix.copy(paths.bower('bootstrap-sass/assets/javascripts/bootstrap.min.js'), paths.public('js'));
 

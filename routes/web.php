@@ -24,3 +24,10 @@ Route::get('/', function () {
 
   return view('homes', compact('houses'));
 });
+
+Route::get('/houses', function () {
+  $houses = \App\Models\House::take(8)->get();
+
+  return response()->json(['houses' => $houses]);
+
+});

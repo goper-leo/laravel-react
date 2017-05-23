@@ -32,6 +32,8 @@
     "prop-types": "^15.5.10",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
-    "react-dual-rangeslider": "^1.2.16"
+    "react-dual-rangeslider": "^1.2.16",
+    "react-slick": "^0.14.11",
+    "slick-carousel": "^1.6.0"
   }
 }

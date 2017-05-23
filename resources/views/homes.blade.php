@@ -2,7 +2,8 @@
 
 
 @section('inline_css')
-  <link href="vendors/lightslider/css/lightslider.min.css" rel="stylesheet" type="text/css">
+  <link href="vendors/slick-carousel/slick.css" rel="stylesheet" type="text/css">
+  <link href="vendors/slick-carousel/slick-theme.css" rel="stylesheet" type="text/css">
 @endsection
 
 @section('body')
