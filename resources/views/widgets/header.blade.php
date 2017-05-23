@@ -61,49 +61,7 @@
 
   {{-- Third Layer --}}
   <div class="container-fluid third-layer" id="third-layer">
-    {{-- <ul class="nav navbar-nav navbar-left">
-      <li class="dropdown">
-        <a id="dLabel"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Room Type
-          <span class="caret"></span>
-        </a>
-        <div class="dropdown-menu" aria-labelledby="dLabel">
-          asdasd
-        </div>
-
-      </li>
-      <li class="dropdown">
-        <a id="dLabel"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Price range
-          <span class="caret"></span>
-        </a>
-        <div class="dropdown-menu" aria-labelledby="dLabel">
-          asdasd
-        </div>
-
-      </li>
-      <li class="dropdown">
-        <a id="dLabel"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Instant Book
-          <span class="caret"></span>
-        </a>
-        <div class="dropdown-menu" aria-labelledby="dLabel">
-          asdasd
-        </div>
-
-      </li>
-      <li class="dropdown">
-        <a id="dLabel"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          More Filters
-          <span class="caret"></span>
-        </a>
-        <div class="dropdown-menu" aria-labelledby="dLabel">
-          asdasd
-        </div>
-
-      </li>
-
-    </ul> --}}
+    
   </div>
-  
+
 </nav>

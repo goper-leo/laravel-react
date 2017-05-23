@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 204);
+/******/ 	return __webpack_require__(__webpack_require__.s = 203);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -21937,317 +21937,10 @@ function traverseAllChildren(children, callback, traverseContext) {
 module.exports = traverseAllChildren;
 
 /***/ }),
-/* 181 */
-/***/ (function(module, exports) {
-
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-// css base code, injected by the css-loader
-module.exports = function() {
-	var list = [];
-
-	// return the list of modules as css string
-	list.toString = function toString() {
-		var result = [];
-		for(var i = 0; i < this.length; i++) {
-			var item = this[i];
-			if(item[2]) {
-				result.push("@media " + item[2] + "{" + item[1] + "}");
-			} else {
-				result.push(item[1]);
-			}
-		}
-		return result.join("");
-	};
-
-	// import a list of modules into the list
-	list.i = function(modules, mediaQuery) {
-		if(typeof modules === "string")
-			modules = [[null, modules, ""]];
-		var alreadyImportedModules = {};
-		for(var i = 0; i < this.length; i++) {
-			var id = this[i][0];
-			if(typeof id === "number")
-				alreadyImportedModules[id] = true;
-		}
-		for(i = 0; i < modules.length; i++) {
-			var item = modules[i];
-			// skip already imported module
-			// this implementation is not 100% perfect for weird media query combinations
-			//  when a module is imported multiple times with different media queries.
-			//  I hope this will never occur (Hey this way we have smaller bundles)
-			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-				if(mediaQuery && !item[2]) {
-					item[2] = mediaQuery;
-				} else if(mediaQuery) {
-					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-				}
-				list.push(item);
-			}
-		}
-	};
-	return list;
-};
-
-
-/***/ }),
-/* 182 */
-/***/ (function(module, exports) {
-
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-var stylesInDom = {},
-	memoize = function(fn) {
-		var memo;
-		return function () {
-			if (typeof memo === "undefined") memo = fn.apply(this, arguments);
-			return memo;
-		};
-	},
-	isOldIE = memoize(function() {
-		return /msie [6-9]\b/.test(self.navigator.userAgent.toLowerCase());
-	}),
-	getHeadElement = memoize(function () {
-		return document.head || document.getElementsByTagName("head")[0];
-	}),
-	singletonElement = null,
-	singletonCounter = 0,
-	styleElementsInsertedAtTop = [];
-
-module.exports = function(list, options) {
-	if(typeof DEBUG !== "undefined" && DEBUG) {
-		if(typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
-	}
-
-	options = options || {};
-	// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
-	// tags it will allow on a page
-	if (typeof options.singleton === "undefined") options.singleton = isOldIE();
-
-	// By default, add <style> tags to the bottom of <head>.
-	if (typeof options.insertAt === "undefined") options.insertAt = "bottom";
-
-	var styles = listToStyles(list);
-	addStylesToDom(styles, options);
-
-	return function update(newList) {
-		var mayRemove = [];
-		for(var i = 0; i < styles.length; i++) {
-			var item = styles[i];
-			var domStyle = stylesInDom[item.id];
-			domStyle.refs--;
-			mayRemove.push(domStyle);
-		}
-		if(newList) {
-			var newStyles = listToStyles(newList);
-			addStylesToDom(newStyles, options);
-		}
-		for(var i = 0; i < mayRemove.length; i++) {
-			var domStyle = mayRemove[i];
-			if(domStyle.refs === 0) {
-				for(var j = 0; j < domStyle.parts.length; j++)
-					domStyle.parts[j]();
-				delete stylesInDom[domStyle.id];
-			}
-		}
-	};
-}
-
-function addStylesToDom(styles, options) {
-	for(var i = 0; i < styles.length; i++) {
-		var item = styles[i];
-		var domStyle = stylesInDom[item.id];
-		if(domStyle) {
-			domStyle.refs++;
-			for(var j = 0; j < domStyle.parts.length; j++) {
-				domStyle.parts[j](item.parts[j]);
-			}
-			for(; j < item.parts.length; j++) {
-				domStyle.parts.push(addStyle(item.parts[j], options));
-			}
-		} else {
-			var parts = [];
-			for(var j = 0; j < item.parts.length; j++) {
-				parts.push(addStyle(item.parts[j], options));
-			}
-			stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
-		}
-	}
-}
-
-function listToStyles(list) {
-	var styles = [];
-	var newStyles = {};
-	for(var i = 0; i < list.length; i++) {
-		var item = list[i];
-		var id = item[0];
-		var css = item[1];
-		var media = item[2];
-		var sourceMap = item[3];
-		var part = {css: css, media: media, sourceMap: sourceMap};
-		if(!newStyles[id])
-			styles.push(newStyles[id] = {id: id, parts: [part]});
-		else
-			newStyles[id].parts.push(part);
-	}
-	return styles;
-}
-
-function insertStyleElement(options, styleElement) {
-	var head = getHeadElement();
-	var lastStyleElementInsertedAtTop = styleElementsInsertedAtTop[styleElementsInsertedAtTop.length - 1];
-	if (options.insertAt === "top") {
-		if(!lastStyleElementInsertedAtTop) {
-			head.insertBefore(styleElement, head.firstChild);
-		} else if(lastStyleElementInsertedAtTop.nextSibling) {
-			head.insertBefore(styleElement, lastStyleElementInsertedAtTop.nextSibling);
-		} else {
-			head.appendChild(styleElement);
-		}
-		styleElementsInsertedAtTop.push(styleElement);
-	} else if (options.insertAt === "bottom") {
-		head.appendChild(styleElement);
-	} else {
-		throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");
-	}
-}
-
-function removeStyleElement(styleElement) {
-	styleElement.parentNode.removeChild(styleElement);
-	var idx = styleElementsInsertedAtTop.indexOf(styleElement);
-	if(idx >= 0) {
-		styleElementsInsertedAtTop.splice(idx, 1);
-	}
-}
-
-function createStyleElement(options) {
-	var styleElement = document.createElement("style");
-	styleElement.type = "text/css";
-	insertStyleElement(options, styleElement);
-	return styleElement;
-}
-
-function createLinkElement(options) {
-	var linkElement = document.createElement("link");
-	linkElement.rel = "stylesheet";
-	insertStyleElement(options, linkElement);
-	return linkElement;
-}
-
-function addStyle(obj, options) {
-	var styleElement, update, remove;
-
-	if (options.singleton) {
-		var styleIndex = singletonCounter++;
-		styleElement = singletonElement || (singletonElement = createStyleElement(options));
-		update = applyToSingletonTag.bind(null, styleElement, styleIndex, false);
-		remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true);
-	} else if(obj.sourceMap &&
-		typeof URL === "function" &&
-		typeof URL.createObjectURL === "function" &&
-		typeof URL.revokeObjectURL === "function" &&
-		typeof Blob === "function" &&
-		typeof btoa === "function") {
-		styleElement = createLinkElement(options);
-		update = updateLink.bind(null, styleElement);
-		remove = function() {
-			removeStyleElement(styleElement);
-			if(styleElement.href)
-				URL.revokeObjectURL(styleElement.href);
-		};
-	} else {
-		styleElement = createStyleElement(options);
-		update = applyToTag.bind(null, styleElement);
-		remove = function() {
-			removeStyleElement(styleElement);
-		};
-	}
-
-	update(obj);
-
-	return function updateStyle(newObj) {
-		if(newObj) {
-			if(newObj.css === obj.css && newObj.media === obj.media && newObj.sourceMap === obj.sourceMap)
-				return;
-			update(obj = newObj);
-		} else {
-			remove();
-		}
-	};
-}
-
-var replaceText = (function () {
-	var textStore = [];
-
-	return function (index, replacement) {
-		textStore[index] = replacement;
-		return textStore.filter(Boolean).join('\n');
-	};
-})();
-
-function applyToSingletonTag(styleElement, index, remove, obj) {
-	var css = remove ? "" : obj.css;
-
-	if (styleElement.styleSheet) {
-		styleElement.styleSheet.cssText = replaceText(index, css);
-	} else {
-		var cssNode = document.createTextNode(css);
-		var childNodes = styleElement.childNodes;
-		if (childNodes[index]) styleElement.removeChild(childNodes[index]);
-		if (childNodes.length) {
-			styleElement.insertBefore(cssNode, childNodes[index]);
-		} else {
-			styleElement.appendChild(cssNode);
-		}
-	}
-}
-
-function applyToTag(styleElement, obj) {
-	var css = obj.css;
-	var media = obj.media;
-
-	if(media) {
-		styleElement.setAttribute("media", media)
-	}
-
-	if(styleElement.styleSheet) {
-		styleElement.styleSheet.cssText = css;
-	} else {
-		while(styleElement.firstChild) {
-			styleElement.removeChild(styleElement.firstChild);
-		}
-		styleElement.appendChild(document.createTextNode(css));
-	}
-}
-
-function updateLink(linkElement, obj) {
-	var css = obj.css;
-	var sourceMap = obj.sourceMap;
-
-	if(sourceMap) {
-		// http://stackoverflow.com/a/26603875
-		css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
-	}
-
-	var blob = new Blob([css], { type: "text/css" });
-
-	var oldSrc = linkElement.href;
-
-	linkElement.href = URL.createObjectURL(blob);
-
-	if(oldSrc)
-		URL.revokeObjectURL(oldSrc);
-}
-
-
-/***/ }),
+/* 181 */,
+/* 182 */,
 /* 183 */,
-/* 184 */,
-/* 185 */
+/* 184 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22263,13 +21956,17 @@ var _reactDom = __webpack_require__(56);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _Room = __webpack_require__(190);
+var _ItemList = __webpack_require__(191);
 
-var _Room2 = _interopRequireDefault(_Room);
+var _ItemList2 = _interopRequireDefault(_ItemList);
 
-var _Price = __webpack_require__(189);
+var _Loading = __webpack_require__(188);
 
-var _Price2 = _interopRequireDefault(_Price);
+var _Loading2 = _interopRequireDefault(_Loading);
+
+var _Map = __webpack_require__(192);
+
+var _Map2 = _interopRequireDefault(_Map);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -22279,45 +21976,51 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Navheader = function (_Component) {
-  _inherits(Navheader, _Component);
+var Body = function (_Component) {
+  _inherits(Body, _Component);
 
-  function Navheader() {
-    var _ref;
+  function Body() {
+    _classCallCheck(this, Body);
 
-    var _temp, _this, _ret;
-
-    _classCallCheck(this, Navheader);
-
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Navheader.__proto__ || Object.getPrototypeOf(Navheader)).call.apply(_ref, [this].concat(args))), _this), _this.handleClick = function (e) {}, _temp), _possibleConstructorReturn(_this, _ret);
+    return _possibleConstructorReturn(this, (Body.__proto__ || Object.getPrototypeOf(Body)).apply(this, arguments));
   }
 
-  _createClass(Navheader, [{
+  _createClass(Body, [{
     key: 'render',
     value: function render() {
       return _react2.default.createElement(
-        'ul',
-        { className: 'nav navbar-nav navbar-left' },
-        _react2.default.createElement(_Room2.default, null),
-        _react2.default.createElement(_Price2.default, null)
+        'div',
+        { className: 'row' },
+        _react2.default.createElement(
+          'div',
+          { className: 'col-xs-8' },
+          _react2.default.createElement(_Loading2.default, null),
+          _react2.default.createElement(
+            'div',
+            { className: 'houses-item-container' },
+            _react2.default.createElement(_ItemList2.default, null)
+          ),
+          _react2.default.createElement('div', { className: 'text-center paginator' })
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'col-xs-4' },
+          _react2.default.createElement(_Map2.default, null)
+        )
       );
     }
   }]);
 
-  return Navheader;
+  return Body;
 }(_react.Component);
 
-_reactDom2.default.render(_react2.default.createElement(Navheader, null), document.getElementById('third-layer'));
+_reactDom2.default.render(_react2.default.createElement(Body, null), document.getElementById('houses-item-container'));
 
 /***/ }),
+/* 185 */,
 /* 186 */,
 /* 187 */,
-/* 188 */,
-/* 189 */
+/* 188 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22334,18 +22037,6 @@ var _react = __webpack_require__(32);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = __webpack_require__(56);
-
-var _reactDom2 = _interopRequireDefault(_reactDom);
-
-var _propTypes = __webpack_require__(198);
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _reactDualRangeslider = __webpack_require__(199);
-
-var _reactDualRangeslider2 = _interopRequireDefault(_reactDualRangeslider);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -22354,114 +22045,47 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Price = function (_Component) {
-    _inherits(Price, _Component);
+var Loading = function (_Component) {
+    _inherits(Loading, _Component);
 
-    function Price() {
+    function Loading() {
         var _ref;
 
         var _temp, _this, _ret;
 
-        _classCallCheck(this, Price);
+        _classCallCheck(this, Loading);
 
         for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
             args[_key] = arguments[_key];
         }
 
-        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Price.__proto__ || Object.getPrototypeOf(Price)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
-            open: false,
-            min: 100,
-            max: 2000,
-            minRange: 100,
-            minValue: 100,
-            maxValue: 2000,
-            step: 100,
-            className: 'range-input-container'
-
-        }, _this.handleClick = function (e) {
-            var value = false;
-
-            if (_reactDom2.default.findDOMNode(_this).contains(e.target)) {
-                value = true;
-            }
-
-            _this.setState(function (prevState) {
-                return { open: value };
-            });
-        }, _this.changeValue = function () {}, _this.onRangeChange = function (state) {
-            _this.state.maxValue = state.max;
-            _this.state.minValue = state.min;
-        }, _this.componentDidMount = function () {
-            window.addEventListener('click', _this.handleClick, false);
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Loading.__proto__ || Object.getPrototypeOf(Loading)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+            display: false
         }, _temp), _possibleConstructorReturn(_this, _ret);
     }
 
-    _createClass(Price, [{
-        key: 'componentWillUnmount',
-        value: function componentWillUnmount() {
-            // make sure you remove the listener when the component is destroyed
-            document.removeEventListener('click', this.handleClick, false);
-        }
-    }, {
+    _createClass(Loading, [{
         key: 'render',
         value: function render() {
+
             return _react2.default.createElement(
-                'li',
-                { className: 'dropdown ' + (this.state.open == true ? 'open' : ''), onClick: this.handleClick },
-                _react2.default.createElement(
-                    'a',
-                    null,
-                    'Price range',
-                    _react2.default.createElement('span', { className: 'caret' })
-                ),
-                _react2.default.createElement(
-                    'div',
-                    { className: 'dropdown-menu' },
-                    _react2.default.createElement(_reactDualRangeslider2.default, {
-                        min: this.state.min,
-                        max: this.state.max,
-                        minRange: this.state.minRange,
-                        minValue: this.state.minValue,
-                        maxValue: this.state.maxValue,
-                        onChange: this.onRangeChange,
-                        step: this.state.step,
-                        className: this.state.className
-                    }),
-                    _react2.default.createElement(
-                        'ul',
-                        { className: 'list-group' },
-                        _react2.default.createElement(
-                            'li',
-                            { className: 'inline-list' },
-                            _react2.default.createElement(
-                                'a',
-                                { href: '#' },
-                                'Cancel'
-                            )
-                        ),
-                        _react2.default.createElement(
-                            'li',
-                            { className: 'inline-list pull-right' },
-                            _react2.default.createElement(
-                                'a',
-                                { href: '#' },
-                                'Apply'
-                            )
-                        )
-                    )
-                )
+                'div',
+                { style: { display: this.state.display == true ? 'block' : 'none' } },
+                _react2.default.createElement('i', { className: 'fa fa-spinner fa-pulse fa-3x fa-fw' })
             );
         }
     }]);
 
-    return Price;
+    return Loading;
 }(_react.Component);
 
-exports.default = Price;
+exports.default = Loading;
 module.exports = exports['default'];
 
 /***/ }),
-/* 190 */
+/* 189 */,
+/* 190 */,
+/* 191 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22478,9 +22102,66 @@ var _react = __webpack_require__(32);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = __webpack_require__(56);
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var _reactDom2 = _interopRequireDefault(_reactDom);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var ItemList = function (_Component) {
+    _inherits(ItemList, _Component);
+
+    function ItemList() {
+        var _ref;
+
+        var _temp, _this, _ret;
+
+        _classCallCheck(this, ItemList);
+
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+        }
+
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = ItemList.__proto__ || Object.getPrototypeOf(ItemList)).call.apply(_ref, [this].concat(args))), _this), _this.state = {}, _temp), _possibleConstructorReturn(_this, _ret);
+    }
+
+    _createClass(ItemList, [{
+        key: 'render',
+        value: function render() {
+
+            return _react2.default.createElement(
+                'div',
+                null,
+                'Item List'
+            );
+        }
+    }]);
+
+    return ItemList;
+}(_react.Component);
+
+exports.default = ItemList;
+module.exports = exports['default'];
+
+/***/ }),
+/* 192 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(32);
+
+var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -22490,1295 +22171,56 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var List = function (_Component) {
-    _inherits(List, _Component);
+var ItemList = function (_Component) {
+    _inherits(ItemList, _Component);
 
-    function List() {
+    function ItemList() {
         var _ref;
 
         var _temp, _this, _ret;
 
-        _classCallCheck(this, List);
+        _classCallCheck(this, ItemList);
 
         for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
             args[_key] = arguments[_key];
         }
 
-        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = List.__proto__ || Object.getPrototypeOf(List)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
-            isChecked: false
-        }, _this.handleClick = function () {
-            _this.state.isChecked = !_this.state.isChecked;
-        }, _temp), _possibleConstructorReturn(_this, _ret);
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = ItemList.__proto__ || Object.getPrototypeOf(ItemList)).call.apply(_ref, [this].concat(args))), _this), _this.state = {}, _temp), _possibleConstructorReturn(_this, _ret);
     }
 
-    _createClass(List, [{
-        key: 'render',
-        value: function render() {
-            var list = this.props.list;
-
-
-            return _react2.default.createElement(
-                'li',
-                { className: 'list-group-item', onClick: this.handleClick },
-                list.label,
-                _react2.default.createElement(
-                    'p',
-                    { className: 'help-block' },
-                    list.details
-                ),
-                _react2.default.createElement('input', { type: 'checkbox', checked: this.state.isChecked })
-            );
-        }
-    }]);
-
-    return List;
-}(_react.Component);
-
-var Room = function (_Component2) {
-    _inherits(Room, _Component2);
-
-    function Room() {
-        var _ref2;
-
-        var _temp2, _this2, _ret2;
-
-        _classCallCheck(this, Room);
-
-        for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-            args[_key2] = arguments[_key2];
-        }
-
-        return _ret2 = (_temp2 = (_this2 = _possibleConstructorReturn(this, (_ref2 = Room.__proto__ || Object.getPrototypeOf(Room)).call.apply(_ref2, [this].concat(args))), _this2), _this2.state = {
-            open: false,
-            items: [{
-                label: 'Entire home',
-                details: 'Lorem Ipsum set et dolor',
-                id: 'entire-home'
-            }, {
-                label: 'Private room',
-                details: 'Lorem Ipsum set et dolor',
-                id: 'private-room'
-            }, {
-                label: 'Shared room',
-                details: 'Lorem Ipsum set et dolor',
-                id: 'shared-room'
-            }]
-        }, _this2.handleClick = function (e) {
-            var value = false;
-
-            if (_reactDom2.default.findDOMNode(_this2).contains(e.target)) {
-                value = true;
-            }
-
-            _this2.setState(function (prevState) {
-                return { open: value };
-            });
-        }, _this2.componentDidMount = function () {
-            window.addEventListener('click', _this2.handleClick, false);
-        }, _this2.createList = function (list) {
-            return _react2.default.createElement(List, { key: list.id, list: list });
-        }, _this2.createAllListItems = function () {
-            return _this2.state.items.map(_this2.createList);
-        }, _temp2), _possibleConstructorReturn(_this2, _ret2);
-    }
-
-    _createClass(Room, [{
-        key: 'componentWillUnmount',
-        value: function componentWillUnmount() {
-            // make sure you remove the listener when the component is destroyed
-            document.removeEventListener('click', this.handleClick, false);
-        }
-    }, {
+    _createClass(ItemList, [{
         key: 'render',
         value: function render() {
 
             return _react2.default.createElement(
-                'li',
-                { className: 'dropdown ' + (this.state.open == true ? 'open' : ''), onClick: this.handleClick },
-                _react2.default.createElement(
-                    'a',
-                    null,
-                    'Room Type',
-                    _react2.default.createElement('span', { className: 'caret' })
-                ),
-                _react2.default.createElement(
-                    'div',
-                    { className: 'dropdown-menu room-filter-dropdown' },
-                    _react2.default.createElement(
-                        'ul',
-                        { className: 'list-group' },
-                        this.createAllListItems()
-                    ),
-                    _react2.default.createElement(
-                        'ul',
-                        { className: 'list-group' },
-                        _react2.default.createElement(
-                            'li',
-                            { className: 'inline-list' },
-                            _react2.default.createElement(
-                                'a',
-                                { href: '#' },
-                                'Cancel'
-                            )
-                        ),
-                        _react2.default.createElement(
-                            'li',
-                            { className: 'inline-list pull-right' },
-                            _react2.default.createElement(
-                                'a',
-                                { href: '#' },
-                                'Apply'
-                            )
-                        )
-                    )
-                )
+                'div',
+                null,
+                'Map Here'
             );
         }
     }]);
 
-    return Room;
+    return ItemList;
 }(_react.Component);
 
-exports.default = Room;
+exports.default = ItemList;
 module.exports = exports['default'];
 
 /***/ }),
-/* 191 */,
-/* 192 */,
 /* 193 */,
 /* 194 */,
-/* 195 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(181)();
-exports.push([module.i, ".C\\(\\#4e5b65\\) {\n  color: #4e5b65;\n}\n.D\\(ib\\) {\n  display: inline-block;\n}\n.Fl\\(end\\) {\n  float: right;\n}\n.H\\(35px\\) {\n  height: 35px;\n}\n.Pos\\(r\\) {\n  position: relative;\n}\n.Ta\\(c\\) {\n  text-align: center;\n}\n.W\\(100\\%\\) {\n  width: 100%;\n}\n", ""]);
-
-/***/ }),
-/* 196 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(181)();
-exports.push([module.i, "/*\n    Range slider styles\n    adapted from http://stackoverflow.com/questions/4753946/html5-form-slider-with-two-inputs-possible\n*/\n\n.range-slider input {\n    pointer-events: none;\n    position: absolute;\n    overflow: hidden;\n    left: 0;\n    width: 100%;\n    outline: none;\n    height: 18px;\n    margin: 0;\n    padding: 0;\n}\n\n.range-slider input[type=range] {\n    -webkit-appearance: none;\n    -moz-appearance: none;\n}\n\n.range-slider input[type=range]::-webkit-slider-thumb, .range-slider input[type=range]::-moz-range-thumb {\n}\n\n.range-slider input[type=range]::-webkit-slider-thumb {\n    -webkit-appearance: none;\n    top: -5px;\n    pointer-events: all;\n    border: 2px solid #CCD2DB;\n    box-shadow: 0px 1px 1px 0px rgba(0,0,0,0.10);\n    border-radius: 4px;\n    background-image:url(%thumb-image%);\n    background-color: white;\n    background-repeat: no-repeat;\n    background-position: 50% 50%;\n    position: relative;\n    z-index: 1;\n    outline: 0;\n    height: 15px;\n    width: 15px;\n}\n\ninput[type=range] {\n\tbackground-color: transparent;\n}\n\ninput[type=range]::-webkit-slider-runnable-track {\n    background-color: transparent;\n    height: 6px;\n    border-radius: 13px;\n    border: 1px solid #EDEEF0;\n}\n\n/* Styles for Firefox */\n.range-slider input[type=range]::-moz-range-thumb {\n    -moz-appearance: none;\n\n    pointer-events: all;\n    border: 2px solid #CCD2DB;\n    box-shadow: 0px 1px 1px 0px rgba(0,0,0,0.10);\n    border-radius: 4px;\n    background-image:url(%thumb-image%);\n    background-color: white;\n    background-repeat: no-repeat;\n    background-position: 50% 50%;\n    position: relative;\n    z-index: 100;\n    outline: 0;\n    height: 12px;\n    width: 12px;\n}\n\n.range-slider input[type=range]::-moz-range-track {\n    position: relative;\n    z-index: -1;\n    background: none transparent;\n    height: 6px;\n    border-radius: 13px;\n    border: 1px solid #EDEEF0;\n}\n\n/* extra fixes for Firefox */\n.range-slider input[type=range]:last-of-type::-moz-range-track {\n    -moz-appearance: none;\n    background: none transparent;\n    border: 0;\n}\n\n.range-slider input[type=range]::-moz-focus-outer {\n    border: 0;\n}\n\n/* selectors for internet explorer\nWe don't support IE, but fallback basic behavior works. In the\nfuture we may implement better visual support here\n\ninput[type=range]::-ms-thumb\ninput[type=range]::-ms-track\ninput[type=range]:focus::-ms-fill-lower\ninput[type=range]:focus::-ms-fill-upper\n*/\n\n", ""]);
-
-/***/ }),
-/* 197 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! @preserve
- * numeral.js
- * version : 1.5.6
- * author : Adam Draper
- * license : MIT
- * http://adamwdraper.github.com/Numeral-js/
- */
-
-(function() {
-
-    /************************************
-        Variables
-    ************************************/
-
-    var numeral,
-        VERSION = '1.5.6',
-        // internal storage for language config files
-        languages = {},
-        defaults = {
-            currentLanguage: 'en',
-            zeroFormat: null,
-            nullFormat: null,
-            defaultFormat: '0,0'
-        },
-        options = {
-            currentLanguage: defaults.currentLanguage,
-            zeroFormat: defaults.zeroFormat,
-            nullFormat: defaults.nullFormat,
-            defaultFormat: defaults.defaultFormat
-        },
-        byteSuffixes = {
-            bytes: ['B','KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
-            iec: ['B','KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB']
-        };
-
-
-    /************************************
-        Constructors
-    ************************************/
-
-
-    // Numeral prototype object
-    function Numeral(number) {
-        this._value = number;
-    }
-
-    /**
-     * Implementation of toFixed() that treats floats more like decimals
-     *
-     * Fixes binary rounding issues (eg. (0.615).toFixed(2) === '0.61') that present
-     * problems for accounting- and finance-related software.
-     */
-    function toFixed (value, maxDecimals, roundingFunction, optionals) {
-        var splitValue = value.toString().split('.'),
-            minDecimals = maxDecimals - (optionals || 0),
-            boundedPrecision,
-            optionalsRegExp,
-            power,
-            output;
-
-        // Use the smallest precision value possible to avoid errors from floating point representation
-        if (splitValue.length === 2) {
-          boundedPrecision = Math.min(Math.max(splitValue[1].length, minDecimals), maxDecimals);
-        } else {
-          boundedPrecision = minDecimals;
-        }
-
-        power = Math.pow(10, boundedPrecision);
-
-        //roundingFunction = (roundingFunction !== undefined ? roundingFunction : Math.round);
-        // Multiply up by precision, round accurately, then divide and use native toFixed():
-        output = (roundingFunction(value * power) / power).toFixed(boundedPrecision);
-
-        if (optionals > maxDecimals - boundedPrecision) {
-            optionalsRegExp = new RegExp('\\.?0{1,' + (optionals - (maxDecimals - boundedPrecision)) + '}$');
-            output = output.replace(optionalsRegExp, '');
-        }
-
-        return output;
-    }
-
-    /************************************
-        Formatting
-    ************************************/
-
-    // determine what type of formatting we need to do
-    function formatNumeral(n, format, roundingFunction) {
-        var output;
-
-        if (n._value === 0 && options.zeroFormat !== null) {
-            output = options.zeroFormat;
-        } else if (n._value === null && options.nullFormat !== null) {
-            output = options.nullFormat;
-        } else {
-            // figure out what kind of format we are dealing with
-            if (format.indexOf('$') > -1) {
-                output = formatCurrency(n, format, roundingFunction);
-            } else if (format.indexOf('%') > -1) {
-                output = formatPercentage(n, format, roundingFunction);
-            } else if (format.indexOf(':') > -1) {
-                output = formatTime(n, format);
-            } else if (format.indexOf('b') > -1 || format.indexOf('ib') > -1) {
-                output = formatBytes(n, format, roundingFunction);
-            } else if (format.indexOf('o') > -1) {
-                output = formatOrdinal(n, format, roundingFunction);
-            } else {
-                output = formatNumber(n._value, format, roundingFunction);
-            }
-        }
-
-        return output;
-    }
-
-    function formatCurrency(n, format, roundingFunction) {
-        var symbolIndex = format.indexOf('$'),
-            openParenIndex = format.indexOf('('),
-            minusSignIndex = format.indexOf('-'),
-            space = '',
-            spliceIndex,
-            output;
-
-        // check for space before or after currency
-        if (format.indexOf(' $') > -1) {
-            space = ' ';
-            format = format.replace(' $', '');
-        } else if (format.indexOf('$ ') > -1) {
-            space = ' ';
-            format = format.replace('$ ', '');
-        } else {
-            format = format.replace('$', '');
-        }
-
-        // format the number
-        output = formatNumber(n._value, format, roundingFunction, false);
-
-        // position the symbol
-        if (symbolIndex <= 1) {
-            if (output.indexOf('(') > -1 || output.indexOf('-') > -1) {
-                output = output.split('');
-                spliceIndex = 1;
-                if (symbolIndex < openParenIndex || symbolIndex < minusSignIndex) {
-                    // the symbol appears before the "(" or "-"
-                    spliceIndex = 0;
-                }
-                output.splice(spliceIndex, 0, languages[options.currentLanguage].currency.symbol + space);
-                output = output.join('');
-            } else {
-                output = languages[options.currentLanguage].currency.symbol + space + output;
-            }
-        } else {
-            if (output.indexOf(')') > -1) {
-                output = output.split('');
-                output.splice(-1, 0, space + languages[options.currentLanguage].currency.symbol);
-                output = output.join('');
-            } else {
-                output = output + space + languages[options.currentLanguage].currency.symbol;
-            }
-        }
-
-        return output;
-    }
-
-    function formatPercentage(n, format, roundingFunction) {
-        var space = '',
-            output,
-            value = n._value * 100;
-
-        // check for space before %
-        if (format.indexOf(' %') > -1) {
-            space = ' ';
-            format = format.replace(' %', '');
-        } else {
-            format = format.replace('%', '');
-        }
-
-        output = formatNumber(value, format, roundingFunction);
-
-        if (output.indexOf(')') > -1) {
-            output = output.split('');
-            output.splice(-1, 0, space + '%');
-            output = output.join('');
-        } else {
-            output = output + space + '%';
-        }
-
-        return output;
-    }
-
-    function formatBytes(n, format, roundingFunction) {
-        var output,
-            suffixes = format.indexOf('ib') > -1 ? byteSuffixes.iec : byteSuffixes.bytes,
-            value = n._value,
-            suffix = '',
-            power,
-            min,
-            max;
-
-        // check for space before
-        if (format.indexOf(' b') > -1 || format.indexOf(' ib') > -1) {
-            suffix = ' ';
-            format = format.replace(' ib', '').replace(' b', '');
-        } else {
-            format = format.replace('ib', '').replace('b', '');
-        }
-
-        for (power = 0; power <= suffixes.length; power++) {
-            min = Math.pow(1024, power);
-            max = Math.pow(1024, power + 1);
-
-            if (value === null || value === 0 || value >= min && value < max) {
-                suffix += suffixes[power];
-
-                if (min > 0) {
-                    value = value / min;
-                }
-
-                break;
-            }
-        }
-
-        output = formatNumber(value, format, roundingFunction);
-
-        return output + suffix;
-    }
-
-    function formatOrdinal(n, format, roundingFunction) {
-        var output,
-            ordinal = '';
-
-        // check for space before
-        if (format.indexOf(' o') > -1) {
-            ordinal = ' ';
-            format = format.replace(' o', '');
-        } else {
-            format = format.replace('o', '');
-        }
-
-        ordinal += languages[options.currentLanguage].ordinal(n._value);
-
-        output = formatNumber(n._value, format, roundingFunction);
-
-        return output + ordinal;
-    }
-
-    function formatTime(n) {
-        var hours = Math.floor(n._value / 60 / 60),
-            minutes = Math.floor((n._value - (hours * 60 * 60)) / 60),
-            seconds = Math.round(n._value - (hours * 60 * 60) - (minutes * 60));
-
-        return hours + ':' + ((minutes < 10) ? '0' + minutes : minutes) + ':' + ((seconds < 10) ? '0' + seconds : seconds);
-    }
-
-    function formatNumber(value, format, roundingFunction) {
-        var negP = false,
-            signed = false,
-            optDec = false,
-            abbr = '',
-            abbrK = false, // force abbreviation to thousands
-            abbrM = false, // force abbreviation to millions
-            abbrB = false, // force abbreviation to billions
-            abbrT = false, // force abbreviation to trillions
-            abbrForce = false, // force abbreviation
-            abs,
-            min,
-            max,
-            power,
-            w,
-            precision,
-            thousands,
-            d = '',
-            neg = false;
-
-        if (value === null) {
-            value = 0;
-        }
-
-        abs = Math.abs(value);
-
-        // see if we should use parentheses for negative number or if we should prefix with a sign
-        // if both are present we default to parentheses
-        if (format.indexOf('(') > -1) {
-            negP = true;
-            format = format.slice(1, -1);
-        } else if (format.indexOf('+') > -1) {
-            signed = true;
-            format = format.replace(/\+/g, '');
-        }
-
-        // see if abbreviation is wanted
-        if (format.indexOf('a') > -1) {
-            // check if abbreviation is specified
-            abbrK = format.indexOf('aK') >= 0;
-            abbrM = format.indexOf('aM') >= 0;
-            abbrB = format.indexOf('aB') >= 0;
-            abbrT = format.indexOf('aT') >= 0;
-            abbrForce = abbrK || abbrM || abbrB || abbrT;
-
-            // check for space before abbreviation
-            if (format.indexOf(' a') > -1) {
-                abbr = ' ';
-            }
-
-            format = format.replace(new RegExp(abbr + 'a[KMBT]?'), '');
-
-            if (abs >= Math.pow(10, 12) && !abbrForce || abbrT) {
-                // trillion
-                abbr = abbr + languages[options.currentLanguage].abbreviations.trillion;
-                value = value / Math.pow(10, 12);
-            } else if (abs < Math.pow(10, 12) && abs >= Math.pow(10, 9) && !abbrForce || abbrB) {
-                // billion
-                abbr = abbr + languages[options.currentLanguage].abbreviations.billion;
-                value = value / Math.pow(10, 9);
-            } else if (abs < Math.pow(10, 9) && abs >= Math.pow(10, 6) && !abbrForce || abbrM) {
-                // million
-                abbr = abbr + languages[options.currentLanguage].abbreviations.million;
-                value = value / Math.pow(10, 6);
-            } else if (abs < Math.pow(10, 6) && abs >= Math.pow(10, 3) && !abbrForce || abbrK) {
-                // thousand
-                abbr = abbr + languages[options.currentLanguage].abbreviations.thousand;
-                value = value / Math.pow(10, 3);
-            }
-        }
-
-
-        if (format.indexOf('[.]') > -1) {
-            optDec = true;
-            format = format.replace('[.]', '.');
-        }
-
-        w = value.toString().split('.')[0];
-        precision = format.split('.')[1];
-        thousands = format.indexOf(',');
-
-        if (precision) {
-            if (precision.indexOf('[') > -1) {
-                precision = precision.replace(']', '');
-                precision = precision.split('[');
-                d = toFixed(value, (precision[0].length + precision[1].length), roundingFunction, precision[1].length);
-            } else {
-                d = toFixed(value, precision.length, roundingFunction);
-            }
-
-            w = d.split('.')[0];
-
-            if (d.indexOf('.') > -1) {
-                d = languages[options.currentLanguage].delimiters.decimal + d.split('.')[1];
-            } else {
-                d = '';
-            }
-
-            if (optDec && Number(d.slice(1)) === 0) {
-                d = '';
-            }
-        } else {
-            w = toFixed(value, null, roundingFunction);
-        }
-
-        // format number
-        if (w.indexOf('-') > -1) {
-            w = w.slice(1);
-            neg = true;
-        }
-
-        if (thousands > -1) {
-            w = w.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1' + languages[options.currentLanguage].delimiters.thousands);
-        }
-
-        if (format.indexOf('.') === 0) {
-            w = '';
-        }
-
-        return ((negP && neg) ? '(' : '') + ((!negP && neg) ? '-' : '') + ((!neg && signed) ? '+' : '') + w + d + ((abbr) ? abbr : '') + ((negP && neg) ? ')' : '');
-    }
-
-
-    /************************************
-        Unformatting
-    ************************************/
-
-    // revert to number
-    function unformatNumeral(n, string) {
-        var stringOriginal = string,
-            thousandRegExp,
-            millionRegExp,
-            billionRegExp,
-            trillionRegExp,
-            bytesMultiplier = false,
-            power,
-            value;
-
-        if (string.indexOf(':') > -1) {
-            value = unformatTime(string);
-        } else {
-            if (string === options.zeroFormat || string === options.nullFormat) {
-                value = 0;
-            } else {
-                if (languages[options.currentLanguage].delimiters.decimal !== '.') {
-                    string = string.replace(/\./g, '').replace(languages[options.currentLanguage].delimiters.decimal, '.');
-                }
-
-                // see if abbreviations are there so that we can multiply to the correct number
-                thousandRegExp = new RegExp('[^a-zA-Z]' + languages[options.currentLanguage].abbreviations.thousand + '(?:\\)|(\\' + languages[options.currentLanguage].currency.symbol + ')?(?:\\))?)?$');
-                millionRegExp = new RegExp('[^a-zA-Z]' + languages[options.currentLanguage].abbreviations.million + '(?:\\)|(\\' + languages[options.currentLanguage].currency.symbol + ')?(?:\\))?)?$');
-                billionRegExp = new RegExp('[^a-zA-Z]' + languages[options.currentLanguage].abbreviations.billion + '(?:\\)|(\\' + languages[options.currentLanguage].currency.symbol + ')?(?:\\))?)?$');
-                trillionRegExp = new RegExp('[^a-zA-Z]' + languages[options.currentLanguage].abbreviations.trillion + '(?:\\)|(\\' + languages[options.currentLanguage].currency.symbol + ')?(?:\\))?)?$');
-
-                // see if bytes are there so that we can multiply to the correct number
-                for (power = 1; power <= byteSuffixes.bytes.length; power++) {
-                    bytesMultiplier = ((string.indexOf(byteSuffixes.bytes[power]) > -1) || (string.indexOf(byteSuffixes.iec[power]) > -1))? Math.pow(1024, power) : false;
-
-                    if (bytesMultiplier) {
-                        break;
-                    }
-                }
-
-                // do some math to create our number
-                value = bytesMultiplier ? bytesMultiplier : 1;
-                value *= stringOriginal.match(thousandRegExp) ? Math.pow(10, 3) : 1;
-                value *= stringOriginal.match(millionRegExp) ? Math.pow(10, 6) : 1;
-                value *= stringOriginal.match(billionRegExp) ? Math.pow(10, 9) : 1;
-                value *= stringOriginal.match(trillionRegExp) ? Math.pow(10, 12) : 1;
-                // check for percentage
-                value *= string.indexOf('%') > -1 ? 0.01 : 1;
-                // check for negative number
-                value *= (string.split('-').length + Math.min(string.split('(').length - 1, string.split(')').length - 1)) % 2 ? 1 : -1;
-                // remove non numbers
-                value *= Number(string.replace(/[^0-9\.]+/g, ''));
-                // round if we are talking about bytes
-                value = bytesMultiplier ? Math.ceil(value) : value;
-            }
-        }
-
-        n._value = value;
-
-        return n._value;
-    }
-    function unformatTime(string) {
-        var timeArray = string.split(':'),
-            seconds = 0;
-        // turn hours and minutes into seconds and add them all up
-        if (timeArray.length === 3) {
-            // hours
-            seconds = seconds + (Number(timeArray[0]) * 60 * 60);
-            // minutes
-            seconds = seconds + (Number(timeArray[1]) * 60);
-            // seconds
-            seconds = seconds + Number(timeArray[2]);
-        } else if (timeArray.length === 2) {
-            // minutes
-            seconds = seconds + (Number(timeArray[0]) * 60);
-            // seconds
-            seconds = seconds + Number(timeArray[1]);
-        }
-        return Number(seconds);
-    }
-
-
-    /************************************
-        Top Level Functions
-    ************************************/
-
-    numeral = function(input) {
-        if (numeral.isNumeral(input)) {
-            input = input.value();
-        } else if (input === 0 || typeof input === 'undefined') {
-            input = 0;
-        } else if (input === null) {
-            input = null;
-        } else if (!Number(input)) {
-            input = numeral.fn.unformat(input);
-        } else {
-            input = Number(input);
-        }
-
-        return new Numeral(input);
-    };
-
-    // version number
-    numeral.version = VERSION;
-
-    // compare numeral object
-    numeral.isNumeral = function(obj) {
-        return obj instanceof Numeral;
-    };
-
-
-    // This function will load languages and then set the global language.  If
-    // no arguments are passed in, it will simply return the current global
-    // language key.
-    numeral.language = function(key, values) {
-        if (!key) {
-            return options.currentLanguage;
-        }
-
-        key = key.toLowerCase();
-
-        if (key && !values) {
-            if (!languages[key]) {
-                throw new Error('Unknown language : ' + key);
-            }
-
-            options.currentLanguage = key;
-        }
-
-        if (values || !languages[key]) {
-            loadLanguage(key, values);
-        }
-
-        return numeral;
-    };
-
-    numeral.reset = function() {
-        for (var property in defaults) {
-            options[property] = defaults[property];
-        }
-    };
-
-    // This function provides access to the loaded language data.  If
-    // no arguments are passed in, it will simply return the current
-    // global language object.
-    numeral.languageData = function(key) {
-        if (!key) {
-            return languages[options.currentLanguage];
-        }
-
-        if (!languages[key]) {
-            throw new Error('Unknown language : ' + key);
-        }
-
-        return languages[key];
-    };
-
-    numeral.language('en', {
-        delimiters: {
-            thousands: ',',
-            decimal: '.'
-        },
-        abbreviations: {
-            thousand: 'k',
-            million: 'm',
-            billion: 'b',
-            trillion: 't'
-        },
-        ordinal: function(number) {
-            var b = number % 10;
-            return (~~(number % 100 / 10) === 1) ? 'th' :
-                (b === 1) ? 'st' :
-                (b === 2) ? 'nd' :
-                (b === 3) ? 'rd' : 'th';
-        },
-        currency: {
-            symbol: '$'
-        }
-    });
-
-    numeral.zeroFormat = function(format) {
-        options.zeroFormat = typeof(format) === 'string' ? format : null;
-    };
-
-    numeral.nullFormat = function (format) {
-        options.nullFormat = typeof(format) === 'string' ? format : null;
-    };
-
-    numeral.defaultFormat = function(format) {
-        options.defaultFormat = typeof(format) === 'string' ? format : '0.0';
-    };
-
-    numeral.validate = function(val, culture) {
-        var _decimalSep,
-            _thousandSep,
-            _currSymbol,
-            _valArray,
-            _abbrObj,
-            _thousandRegEx,
-            languageData,
-            temp;
-
-        //coerce val to string
-        if (typeof val !== 'string') {
-            val += '';
-            if (console.warn) {
-                console.warn('Numeral.js: Value is not string. It has been co-erced to: ', val);
-            }
-        }
-
-        //trim whitespaces from either sides
-        val = val.trim();
-
-        //if val is just digits return true
-        if ( !! val.match(/^\d+$/)) {
-            return true;
-        }
-
-        //if val is empty return false
-        if (val === '') {
-            return false;
-        }
-
-        //get the decimal and thousands separator from numeral.languageData
-        try {
-            //check if the culture is understood by numeral. if not, default it to current language
-            languageData = numeral.languageData(culture);
-        } catch (e) {
-            languageData = numeral.languageData(numeral.language());
-        }
-
-        //setup the delimiters and currency symbol based on culture/language
-        _currSymbol = languageData.currency.symbol;
-        _abbrObj = languageData.abbreviations;
-        _decimalSep = languageData.delimiters.decimal;
-        if (languageData.delimiters.thousands === '.') {
-            _thousandSep = '\\.';
-        } else {
-            _thousandSep = languageData.delimiters.thousands;
-        }
-
-        // validating currency symbol
-        temp = val.match(/^[^\d]+/);
-        if (temp !== null) {
-            val = val.substr(1);
-            if (temp[0] !== _currSymbol) {
-                return false;
-            }
-        }
-
-        //validating abbreviation symbol
-        temp = val.match(/[^\d]+$/);
-        if (temp !== null) {
-            val = val.slice(0, -1);
-            if (temp[0] !== _abbrObj.thousand && temp[0] !== _abbrObj.million && temp[0] !== _abbrObj.billion && temp[0] !== _abbrObj.trillion) {
-                return false;
-            }
-        }
-
-        _thousandRegEx = new RegExp(_thousandSep + '{2}');
-
-        if (!val.match(/[^\d.,]/g)) {
-            _valArray = val.split(_decimalSep);
-            if (_valArray.length > 2) {
-                return false;
-            } else {
-                if (_valArray.length < 2) {
-                    return ( !! _valArray[0].match(/^\d+.*\d$/) && !_valArray[0].match(_thousandRegEx));
-                } else {
-                    if (_valArray[0].length === 1) {
-                        return ( !! _valArray[0].match(/^\d+$/) && !_valArray[0].match(_thousandRegEx) && !! _valArray[1].match(/^\d+$/));
-                    } else {
-                        return ( !! _valArray[0].match(/^\d+.*\d$/) && !_valArray[0].match(_thousandRegEx) && !! _valArray[1].match(/^\d+$/));
-                    }
-                }
-            }
-        }
-
-        return false;
-    };
-
-    /************************************
-        Helpers
-    ************************************/
-
-    function loadLanguage(key, values) {
-        languages[key] = values;
-    }
-
-    /************************************
-        Floating-point helpers
-    ************************************/
-
-    // The floating-point helper functions and implementation
-    // borrows heavily from sinful.js: http://guipn.github.io/sinful.js/
-
-    // Production steps of ECMA-262, Edition 5, 15.4.4.21
-    // Reference: http://es5.github.io/#x15.4.4.21
-    if (!Array.prototype.reduce) {
-        Array.prototype.reduce = function(callback /*, initialValue*/) {
-            'use strict';
-            if (this === null) {
-                throw new TypeError('Array.prototype.reduce called on null or undefined');
-            }
-
-            if (typeof callback !== 'function') {
-                throw new TypeError(callback + ' is not a function');
-            }
-
-            var t = Object(this), len = t.length >>> 0, k = 0, value;
-
-            if (arguments.length === 2) {
-                value = arguments[1];
-            } else {
-                while (k < len && !(k in t)) {
-                    k++;
-                }
-
-                if (k >= len) {
-                    throw new TypeError('Reduce of empty array with no initial value');
-                }
-
-                value = t[k++];
-            }
-            for (; k < len; k++) {
-                if (k in t) {
-                    value = callback(value, t[k], k, t);
-                }
-            }
-            return value;
-        };
-    }
-
-    /**
-     * Computes the multiplier necessary to make x >= 1,
-     * effectively eliminating miscalculations caused by
-     * finite precision.
-     */
-    function multiplier(x) {
-        var parts = x.toString().split('.');
-        if (parts.length < 2) {
-            return 1;
-        }
-        return Math.pow(10, parts[1].length);
-    }
-
-    /**
-     * Given a variable number of arguments, returns the maximum
-     * multiplier that must be used to normalize an operation involving
-     * all of them.
-     */
-    function correctionFactor() {
-        var args = Array.prototype.slice.call(arguments);
-        return args.reduce(function(prev, next) {
-            var mp = multiplier(prev),
-                mn = multiplier(next);
-            return mp > mn ? mp : mn;
-        }, -Infinity);
-    }
-
-
-    /************************************
-        Numeral Prototype
-    ************************************/
-
-
-    numeral.fn = Numeral.prototype = {
-
-        clone: function() {
-            return numeral(this);
-        },
-
-        format: function (inputString, roundingFunction) {
-            return formatNumeral(this,
-                inputString ? inputString : options.defaultFormat,
-                roundingFunction !== undefined ? roundingFunction : Math.round
-            );
-        },
-
-        unformat: function (inputString) {
-            if (Object.prototype.toString.call(inputString) === '[object Number]') {
-                return inputString;
-            }
-
-            return unformatNumeral(this, inputString ? inputString : options.defaultFormat);
-        },
-
-        value: function() {
-            return this._value;
-        },
-
-        valueOf: function() {
-            return this._value;
-        },
-
-        set: function(value) {
-            this._value = Number(value);
-            return this;
-        },
-
-        add: function(value) {
-            var corrFactor = correctionFactor.call(null, this._value, value);
-
-            function cback(accum, curr, currI, O) {
-                return accum + corrFactor * curr;
-            }
-            this._value = [this._value, value].reduce(cback, 0) / corrFactor;
-            return this;
-        },
-
-        subtract: function(value) {
-            var corrFactor = correctionFactor.call(null, this._value, value);
-
-            function cback(accum, curr, currI, O) {
-                return accum - corrFactor * curr;
-            }
-            this._value = [value].reduce(cback, this._value * corrFactor) / corrFactor;
-            return this;
-        },
-
-        multiply: function(value) {
-            function cback(accum, curr, currI, O) {
-                var corrFactor = correctionFactor(accum, curr);
-                return (accum * corrFactor) * (curr * corrFactor) /
-                    (corrFactor * corrFactor);
-            }
-            this._value = [this._value, value].reduce(cback, 1);
-            return this;
-        },
-
-        divide: function(value) {
-            function cback(accum, curr, currI, O) {
-                var corrFactor = correctionFactor(accum, curr);
-                return (accum * corrFactor) / (curr * corrFactor);
-            }
-            this._value = [this._value, value].reduce(cback);
-            return this;
-        },
-
-        difference: function(value) {
-            return Math.abs(numeral(this._value).subtract(value).value());
-        }
-
-    };
-
-    /************************************
-        Exposing Numeral
-    ************************************/
-
-    // CommonJS module is defined
-    if (typeof module !== 'undefined' && module.exports) {
-        module.exports = numeral;
-    }
-
-    /*global ender:false */
-    if (typeof ender === 'undefined') {
-        // here, `this` means `window` in the browser, or `global` on the server
-        // add `numeral` as a global object via a string identifier,
-        // for Closure Compiler 'advanced' mode
-        this['numeral'] = numeral;
-    }
-
-    /*global define:false */
-    if (true) {
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function() {
-            return numeral;
-        }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-    }
-}).call(this);
-
-
-/***/ }),
-/* 198 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/**
- * Copyright 2013-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- */
-
-if (true) {
-  var REACT_ELEMENT_TYPE = (typeof Symbol === 'function' &&
-    Symbol.for &&
-    Symbol.for('react.element')) ||
-    0xeac7;
-
-  var isValidElement = function(object) {
-    return typeof object === 'object' &&
-      object !== null &&
-      object.$$typeof === REACT_ELEMENT_TYPE;
-  };
-
-  // By explicitly using `prop-types` you are opting into new development behavior.
-  // http://fb.me/prop-types-in-prod
-  var throwOnDirectAccess = true;
-  module.exports = __webpack_require__(82)(isValidElement, throwOnDirectAccess);
-} else {
-  // By explicitly using `prop-types` you are opting into new production behavior.
-  // http://fb.me/prop-types-in-prod
-  module.exports = require('./factoryWithThrowingShims')();
-}
-
-
-/***/ }),
-/* 199 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(32);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _numeral = __webpack_require__(197);
-
-var _numeral2 = _interopRequireDefault(_numeral);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-if (typeof window !== 'undefined') {
-    __webpack_require__(201);
-    __webpack_require__(200);
-}
-
-var RangeSlider = function (_React$Component) {
-    _inherits(RangeSlider, _React$Component);
-
-    function RangeSlider(props) {
-        _classCallCheck(this, RangeSlider);
-
-        var _this = _possibleConstructorReturn(this, (RangeSlider.__proto__ || Object.getPrototypeOf(RangeSlider)).call(this));
-
-        _this.state = {
-            min: props.min,
-            max: props.max,
-            minElement: null,
-            maxElement: null,
-            minRange: props.minRange || 500
-        };
-        return _this;
-    }
-
-    _createClass(RangeSlider, [{
-        key: 'componentDidMount',
-        value: function componentDidMount() {
-            var min = this.props.minValue || this.props.min;
-            var max = this.props.maxValue || this.props.max;
-            this.state.minElement.value = min;
-            this.state.maxElement.value = max;
-            this.setState({ min: min, max: max });
-        }
-    }, {
-        key: 'componentWillReceiveProps',
-        value: function componentWillReceiveProps(props) {
-            var min = this.props.minValue || this.props.min;
-            var max = this.props.maxValue || this.props.max;
-            this.state.minElement.value = min;
-            this.state.maxElement.value = max;
-            this.setState({ min: min, max: max });
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            var _this2 = this;
-
-            var ret = _react2.default.createElement(
-                'div',
-                { style: this.props.style, className: this.props.className + ' W(100%)' },
-                _react2.default.createElement(
-                    'div',
-                    null,
-                    'foo'
-                ),
-                _react2.default.createElement(
-                    'div',
-                    { className: 'D(ib) C(#4e5b65)' },
-                    (0, _numeral2.default)(this.state.min).format('$0,0')
-                ),
-                _react2.default.createElement(
-                    'div',
-                    { className: 'D(ib) Fl(end) C(#4e5b65)' },
-                    (0, _numeral2.default)(this.state.max).format('$0,0'),
-                    this.props.max === this.state.max ? '+' : ''
-                ),
-                _react2.default.createElement(
-                    'div',
-                    {
-                        style: this.props.style,
-                        className: this.props.className + ' range-slider Pos(r) Ta(c) H(35px)' },
-                    _react2.default.createElement(
-                        'div',
-                        { style: {
-                                position: 'absolute',
-                                boxSizing: 'border-box',
-                                width: '100%',
-                                paddingLeft: '8px',
-                                paddingRight: '8px',
-                                top: '7px'
-                            } },
-                        _react2.default.createElement('div', { style: {
-                                marginLeft: (this.state.min - this.props.min) / (this.props.max - this.props.min) * 100 + '%',
-                                width: 100 - (this.state.min - this.props.min + this.props.max - this.state.max) / (this.props.max - this.props.min) * 100 + '%',
-                                height: '4px',
-                                backgroundColor: '#5FCCC7'
-                            } })
-                    ),
-                    _react2.default.createElement('input', {
-                        onChange: function onChange(ev) {
-                            if (ev.target.value < _this2.state.max - _this2.state.minRange) {
-                                _this2.setState({ min: parseInt(ev.target.value) }, function () {
-                                    this.props.onChange(this.state);
-                                });
-                            } else {
-                                _this2.state.minElement.value = _this2.state.min;
-                                _this2.setState({ min: parseInt(_this2.state.min) }, function () {
-                                    this.props.onChange(this.state);
-                                });
-                            }
-                        },
-                        ref: function ref(el) {
-                            _this2.state.minElement = el;
-                        },
-                        min: this.props.min,
-                        max: this.props.max,
-                        step: this.props.step,
-                        type: 'range'
-                    }),
-                    _react2.default.createElement('input', {
-                        onChange: function onChange(ev) {
-                            if (ev.target.value > _this2.state.min + _this2.state.minRange) {
-                                _this2.setState({ max: parseInt(ev.target.value) }, function () {
-                                    this.props.onChange(this.state);
-                                });
-                            } else {
-                                _this2.state.maxElement.value = _this2.state.max;
-                                _this2.setState({ max: parseInt(_this2.state.max) }, function () {
-                                    this.props.onChange(this.state);
-                                });
-                            }
-                        },
-                        ref: function ref(el) {
-                            _this2.state.maxElement = el;
-                        },
-                        min: this.props.min,
-                        max: this.props.max,
-                        step: this.props.step,
-                        type: 'range'
-                    })
-                )
-            );
-            return ret;
-        }
-    }]);
-
-    return RangeSlider;
-}(_react2.default.Component);
-
-RangeSlider.defaultProps = { className: '' };
-
-exports.default = RangeSlider;
-//# sourceMappingURL=RangeSlider.js.map
-
-
-/***/ }),
-/* 200 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(195);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// add the styles to the DOM
-var update = __webpack_require__(182)(content, {});
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../../css-loader/index.js!./atomic.css", function() {
-			var newContent = require("!!../../css-loader/index.js!./atomic.css");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 201 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(196);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// add the styles to the DOM
-var update = __webpack_require__(182)(content, {});
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../../css-loader/index.js!./rangeslider.css", function() {
-			var newContent = require("!!../../css-loader/index.js!./rangeslider.css");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
+/* 195 */,
+/* 196 */,
+/* 197 */,
+/* 198 */,
+/* 199 */,
+/* 200 */,
+/* 201 */,
 /* 202 */,
-/* 203 */,
-/* 204 */
+/* 203 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(185);
+module.exports = __webpack_require__(184);
 
 
 /***/ })
