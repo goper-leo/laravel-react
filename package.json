@@ -28,6 +28,7 @@
     "vue": "^2.1.10"
   },
   "dependencies": {
+    "google-map-react": "^0.24.0",
     "heightify": "^5.0.5",
     "matchheight": "0.0.4",
     "prop-types": "^15.5.10",
