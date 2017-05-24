@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Slider from 'react-slick';
-import heightify from 'heightify';
 
 class Item extends Component {
 
@@ -96,30 +95,18 @@ export default class ItemList extends Component {
     };
 
     componentDidMount = () => {
-        fetch(window.location + 'houses').then(response => {
-          if (response.ok) {
-            response.json().then(houses => {
-                this.setState(houses);
 
-                heightify({
-                    element: document.querySelectorAll('.item'),
-                    hasImages: true,
-                    destroyOnSize: 500
-                })
-            });
-          }
-        });
     }
 
     createItem = (house) => <Item key={house.id} house={house} />
 
-    createItems = () => typeof (this.state.houses) !== 'undefined' ? this.state.houses.map(this.createItem) : ''
+    createItems = (houses) => typeof (houses) !== 'undefined' ? houses.map(this.createItem) : ''
 
     render() {
-
+        console.log(this.props.houses);
         return (
             <div>
-                {this.createItems()}
+                {this.createItems(this.props.houses)}
             </div>
         );
     }
