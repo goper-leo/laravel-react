@@ -16,7 +16,22 @@
 
       &:hover {
         cursor: pointer;
+        color: $brand-success;
       }
+    }
+
+    .item-slider {
+        .slick-arrow {
+            z-index: 3;
+
+            &.slick-prev {
+                left: 5px;
+            }
+
+            &.slick-next {
+                right: 5px;
+            }
+        }
     }
   }
 

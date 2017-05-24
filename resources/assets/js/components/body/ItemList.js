@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import Slider from 'react-slick';
+import heightify from 'heightify';
 
 class Item extends Component {
 
     state = {
         imagePrefix: ['a', 'b', 'c', 'd'],
         imageSuffix: ['1', '2' , '3'],
+        starRatings: [1, 2, 3, 4, 5],
     }
 
     handleClick = () => {
@@ -20,9 +22,28 @@ class Item extends Component {
     }
 
     getSliderImages = () => {
-        for (var i = 0; i < 4; i++) {
+        for (let i = 0; i < 4; i++) {
             <div><img src={this.getRandomImage()} /></div>
         }
+    }
+
+    getRandomRating = () => {
+        let rating = this.state.starRatings[Math.floor(Math.random() * this.state.starRatings.length)];
+        let ratings = [];
+
+        for (let i=0; i < rating; i++) {
+            ratings.push(<span key={i} className="fa fa-star"></span>);
+        }
+
+        for (let i= rating; i < 5; i++) {
+            ratings.push(<span key={i} className="fa fa-star-o"></span>);
+        }
+
+        return ratings;
+    }
+
+    getRandomReview = () => {
+
     }
 
     render() {
@@ -36,18 +57,19 @@ class Item extends Component {
         };
 
         const { house } = this.props;
+
     	return (
             <div className="col-xs-6">
                 <div className="item">
                     <div className="item-image">
-                        <ul className="item-slider">
+                        <div className="item-slider">
                             <Slider {...sliderSettings}>
                                 <div><img src={this.getRandomImage()} /></div>
                                 <div><img src={this.getRandomImage()} /></div>
                                 <div><img src={this.getRandomImage()} /></div>
                             </Slider>
 
-                        </ul>
+                        </div>
                         <i className="save-item fa fa-heart fa-3x"></i>
                     </div>
                     <div className="item-details">
@@ -58,8 +80,7 @@ class Item extends Component {
                             {house.description}
                         </p>
                         <div className="item-review">
-                            <span className="fa fa-star"></span>
-                            <span className="fa fa-star-o"></span>
+                            {this.getRandomRating()}
                             100 reviews
                         </div>
                     </div>
@@ -79,6 +100,12 @@ export default class ItemList extends Component {
           if (response.ok) {
             response.json().then(houses => {
                 this.setState(houses);
+
+                heightify({
+                    element: document.querySelectorAll('.item'),
+                    hasImages: true,
+                    destroyOnSize: 500
+                })
             });
           }
         });

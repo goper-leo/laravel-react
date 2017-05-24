@@ -5,30 +5,34 @@ import ItemList from './components/body/ItemList';
 import Loading from './components/Loading';
 import Map from './components/body/Map';
 
-console.log();
+
 class Body extends Component {
 
-  render() {
-    return (
-        <div className="row">
-          <div className="col-xs-8">
+    componentDidMount = () => {
 
-              <Loading />
-            <div className="houses-item-container">
-              <ItemList />
+    }
+
+    render() {
+        return (
+            <div className="row">
+              <div className="col-xs-8">
+
+                  <Loading />
+                <div className="houses-item-container">
+                  <ItemList />
+                </div>
+
+                <div className="text-center paginator">
+
+                </div>
+
+              </div>
+              <div className="col-xs-4">
+                  <Map />
+              </div>
             </div>
-
-            <div className="text-center paginator">
-
-            </div>
-
-          </div>
-          <div className="col-xs-4">
-              <Map />
-          </div>
-        </div>
-    );
-  }
+        );
+    }
 
 }
 
