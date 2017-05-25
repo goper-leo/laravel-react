@@ -10,7 +10,7 @@ import Map from './components/body/Map';
 class Body extends Component {
 
     state = {
-        location: {lat: 7.103602, lng: 125.641840}
+        location: {lat: 7.103602, lng: 125.641840},
     };
 
     componentDidMount = () => {
@@ -31,8 +31,6 @@ class Body extends Component {
 
     onHoverFunction = (position) => {
         this.setState((prevState) => ({location : position}));
-        console.log('Body hover');
-        console.log(this.state.location);
     }
 
     render() {

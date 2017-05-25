@@ -43,7 +43,7 @@ class Item extends Component {
 
     itemHover = () => {
 
-        this.props.onHoverFunction({lat: this.props.lat, lng: this.props.long});
+        this.props.onHoverFunction({lat: parseFloat(this.props.lat), lng: parseFloat(this.props.long)});
     }
 
     render() {

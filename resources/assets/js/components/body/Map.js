@@ -38,18 +38,33 @@ export default class Map extends Component {
         zoom: 14,
     };
 
+    createMapOptions = (maps) => {
+        return {
+            zoomControlOptions: {
+                position: maps.ControlPosition.TOP_RIGHT,
+                style: maps.ZoomControlStyle.SMALL
+            },
+            mapTypeControlOptions: {
+                position: maps.ControlPosition.TOP_LEFT
+            },
+            mapTypeControl: true
+        }
+    }
+
+
     createMarker = (house) => <Marker key={house.id} lat={house.lat} lng={house.long} text={house.price} />
 
     createAllMarkers = (houses) => typeof (houses) !== 'undefined' ? houses.map(this.createMarker) : ''
 
     render() {
-        // console.log('Map');
-        // console.log(this.props.location);
+
         return (
             <div className="google-map-container">
                 <GoogleMapReact
-                    defaultCenter={this.props.location}
+                    defaultCenter={this.state.center}
+                    center={this.props.location}
                     defaultZoom={this.state.zoom}
+                    options={this.createMapOptions}
                 >
                     {this.createAllMarkers(this.props.houses)}
 

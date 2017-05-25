@@ -23398,8 +23398,6 @@ var Body = function (_Component) {
             _this.setState(function (prevState) {
                 return { location: position };
             });
-            console.log('Body hover');
-            console.log(_this.state.location);
         }, _temp), _possibleConstructorReturn(_this, _ret);
     }
 
@@ -23579,7 +23577,7 @@ var Item = function (_Component) {
             return ratings;
         }, _this.itemHover = function () {
 
-            _this.props.onHoverFunction({ lat: _this.props.lat, lng: _this.props.long });
+            _this.props.onHoverFunction({ lat: parseFloat(_this.props.lat), lng: parseFloat(_this.props.long) });
         }, _temp), _possibleConstructorReturn(_this, _ret);
     }
 
@@ -23804,6 +23802,17 @@ var Map = function (_Component2) {
         return _ret2 = (_temp2 = (_this2 = _possibleConstructorReturn(this, (_ref2 = Map.__proto__ || Object.getPrototypeOf(Map)).call.apply(_ref2, [this].concat(args))), _this2), _this2.state = {
             center: { lat: 7.103602, lng: 125.641840 },
             zoom: 14
+        }, _this2.createMapOptions = function (maps) {
+            return {
+                zoomControlOptions: {
+                    position: maps.ControlPosition.TOP_RIGHT,
+                    style: maps.ZoomControlStyle.SMALL
+                },
+                mapTypeControlOptions: {
+                    position: maps.ControlPosition.TOP_LEFT
+                },
+                mapTypeControl: true
+            };
         }, _this2.createMarker = function (house) {
             return _react2.default.createElement(Marker, { key: house.id, lat: house.lat, lng: house.long, text: house.price });
         }, _this2.createAllMarkers = function (houses) {
@@ -23814,16 +23823,17 @@ var Map = function (_Component2) {
     _createClass(Map, [{
         key: 'render',
         value: function render() {
-            // console.log('Map');
-            // console.log(this.props.location);
+
             return _react2.default.createElement(
                 'div',
                 { className: 'google-map-container' },
                 _react2.default.createElement(
                     _googleMapReact2.default,
                     {
-                        defaultCenter: this.props.location,
-                        defaultZoom: this.state.zoom
+                        defaultCenter: this.state.center,
+                        center: this.props.location,
+                        defaultZoom: this.state.zoom,
+                        options: this.createMapOptions
                     },
                     this.createAllMarkers(this.props.houses)
                 )
