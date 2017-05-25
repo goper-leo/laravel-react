@@ -10,7 +10,7 @@ import Map from './components/body/Map';
 class Body extends Component {
 
     state = {
-
+        location: {lat: 7.103602, lng: 125.641840}
     };
 
     componentDidMount = () => {
@@ -29,6 +29,12 @@ class Body extends Component {
         });
     }
 
+    onHoverFunction = (position) => {
+        this.setState((prevState) => ({location : position}));
+        console.log('Body hover');
+        console.log(this.state.location);
+    }
+
     render() {
         return (
             <div className="row">
@@ -36,7 +42,7 @@ class Body extends Component {
 
                   <Loading />
                 <div className="houses-item-container">
-                  <ItemList houses={this.state.houses}/>
+                  <ItemList houses={this.state.houses} onHoverFunction={this.onHoverFunction} />
                 </div>
 
                 <div className="text-center paginator">
@@ -45,7 +51,7 @@ class Body extends Component {
 
               </div>
               <div className="col-xs-4">
-                  <Map houses={this.state.houses}/>
+                  <Map houses={this.state.houses} location={this.state.location} />
               </div>
             </div>
         );

@@ -23378,7 +23378,9 @@ var Body = function (_Component) {
             args[_key] = arguments[_key];
         }
 
-        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Body.__proto__ || Object.getPrototypeOf(Body)).call.apply(_ref, [this].concat(args))), _this), _this.state = {}, _this.componentDidMount = function () {
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Body.__proto__ || Object.getPrototypeOf(Body)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+            location: { lat: 7.103602, lng: 125.641840 }
+        }, _this.componentDidMount = function () {
             fetch(window.location + 'houses').then(function (response) {
                 if (response.ok) {
                     response.json().then(function (houses) {
@@ -23392,6 +23394,12 @@ var Body = function (_Component) {
                     });
                 }
             });
+        }, _this.onHoverFunction = function (position) {
+            _this.setState(function (prevState) {
+                return { location: position };
+            });
+            console.log('Body hover');
+            console.log(_this.state.location);
         }, _temp), _possibleConstructorReturn(_this, _ret);
     }
 
@@ -23408,14 +23416,14 @@ var Body = function (_Component) {
                     _react2.default.createElement(
                         'div',
                         { className: 'houses-item-container' },
-                        _react2.default.createElement(_ItemList2.default, { houses: this.state.houses })
+                        _react2.default.createElement(_ItemList2.default, { houses: this.state.houses, onHoverFunction: this.onHoverFunction })
                     ),
                     _react2.default.createElement('div', { className: 'text-center paginator' })
                 ),
                 _react2.default.createElement(
                     'div',
                     { className: 'col-xs-4' },
-                    _react2.default.createElement(_Map2.default, { houses: this.state.houses })
+                    _react2.default.createElement(_Map2.default, { houses: this.state.houses, location: this.state.location })
                 )
             );
         }
@@ -23569,7 +23577,10 @@ var Item = function (_Component) {
             }
 
             return ratings;
-        }, _this.getRandomReview = function () {}, _temp), _possibleConstructorReturn(_this, _ret);
+        }, _this.itemHover = function () {
+
+            _this.props.onHoverFunction({ lat: _this.props.lat, lng: _this.props.long });
+        }, _temp), _possibleConstructorReturn(_this, _ret);
     }
 
     //** Return image string
@@ -23595,7 +23606,7 @@ var Item = function (_Component) {
                 { className: 'col-xs-6' },
                 _react2.default.createElement(
                     'div',
-                    { className: 'item' },
+                    { className: 'item', onMouseOver: this.itemHover },
                     _react2.default.createElement(
                         'div',
                         { className: 'item-image' },
@@ -23669,8 +23680,10 @@ var ItemList = function (_Component2) {
             args[_key2] = arguments[_key2];
         }
 
-        return _ret2 = (_temp2 = (_this2 = _possibleConstructorReturn(this, (_ref2 = ItemList.__proto__ || Object.getPrototypeOf(ItemList)).call.apply(_ref2, [this].concat(args))), _this2), _this2.state = {}, _this2.componentDidMount = function () {}, _this2.createItem = function (house) {
-            return _react2.default.createElement(Item, { key: house.id, house: house });
+        return _ret2 = (_temp2 = (_this2 = _possibleConstructorReturn(this, (_ref2 = ItemList.__proto__ || Object.getPrototypeOf(ItemList)).call.apply(_ref2, [this].concat(args))), _this2), _this2.state = {}, _this2.componentDidMount = function () {}, _this2.onHoverFunction = function (position) {
+            _this2.props.onHoverFunction(position);
+        }, _this2.createItem = function (house) {
+            return _react2.default.createElement(Item, { key: house.id, house: house, lat: house.lat, long: house.long, onHoverFunction: _this2.onHoverFunction });
         }, _this2.createItems = function (houses) {
             return typeof houses !== 'undefined' ? houses.map(_this2.createItem) : '';
         }, _temp2), _possibleConstructorReturn(_this2, _ret2);
@@ -23679,7 +23692,7 @@ var ItemList = function (_Component2) {
     _createClass(ItemList, [{
         key: 'render',
         value: function render() {
-            console.log(this.props.houses);
+
             return _react2.default.createElement(
                 'div',
                 null,
@@ -23792,7 +23805,7 @@ var Map = function (_Component2) {
             center: { lat: 7.103602, lng: 125.641840 },
             zoom: 14
         }, _this2.createMarker = function (house) {
-            return _react2.default.createElement(Marker, { lat: house.lat, lng: house.long, text: house.price });
+            return _react2.default.createElement(Marker, { key: house.id, lat: house.lat, lng: house.long, text: house.price });
         }, _this2.createAllMarkers = function (houses) {
             return typeof houses !== 'undefined' ? houses.map(_this2.createMarker) : '';
         }, _temp2), _possibleConstructorReturn(_this2, _ret2);
@@ -23801,14 +23814,15 @@ var Map = function (_Component2) {
     _createClass(Map, [{
         key: 'render',
         value: function render() {
-            console.log(this.props.houses);
+            // console.log('Map');
+            // console.log(this.props.location);
             return _react2.default.createElement(
                 'div',
                 { className: 'google-map-container' },
                 _react2.default.createElement(
                     _googleMapReact2.default,
                     {
-                        defaultCenter: this.state.center,
+                        defaultCenter: this.props.location,
                         defaultZoom: this.state.zoom
                     },
                     this.createAllMarkers(this.props.houses)

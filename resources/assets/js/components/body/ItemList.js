@@ -41,8 +41,9 @@ class Item extends Component {
         return ratings;
     }
 
-    getRandomReview = () => {
+    itemHover = () => {
 
+        this.props.onHoverFunction({lat: this.props.lat, lng: this.props.long});
     }
 
     render() {
@@ -59,7 +60,7 @@ class Item extends Component {
 
     	return (
             <div className="col-xs-6">
-                <div className="item">
+                <div className="item" onMouseOver={this.itemHover}>
                     <div className="item-image">
                         <div className="item-slider">
                             <Slider {...sliderSettings}>
@@ -98,12 +99,16 @@ export default class ItemList extends Component {
 
     }
 
-    createItem = (house) => <Item key={house.id} house={house} />
+    onHoverFunction = (position) => {
+        this.props.onHoverFunction(position);
+    }
+
+    createItem = (house) => <Item key={house.id} house={house} lat={house.lat} long={house.long} onHoverFunction={this.onHoverFunction} />
 
     createItems = (houses) => typeof (houses) !== 'undefined' ? houses.map(this.createItem) : ''
 
     render() {
-        console.log(this.props.houses);
+
         return (
             <div>
                 {this.createItems(this.props.houses)}

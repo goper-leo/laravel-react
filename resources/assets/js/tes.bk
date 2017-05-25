@@ -12,15 +12,15 @@ class Button extends React.Component {
       </button>
 
     );
-  }w
+  }
 }
-
+============================================================================================
 const Result = (props) => {
 	return (
   	<div>{props.counter}</div>
   );
 };
-
+============================================================================================
 class App extends React.Component {
 	state = {counter : 0 };
 
