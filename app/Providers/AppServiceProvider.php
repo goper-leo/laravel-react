@@ -13,6 +13,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+       Schema::defaultStringLength(191);
       \Blade::extend(function($value) {
           return preg_replace('/\@define(.+)/', '<?php ${1}; ?>', $value);
       });
