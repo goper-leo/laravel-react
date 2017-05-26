@@ -36,6 +36,10 @@ export default class Map extends Component {
     state = {
         center: {lat: 7.103602, lng: 125.641840},
         zoom: 14,
+        googleMapSettings: {
+            key: 'AIzaSyA_r_QLfsjFeJLV82AEcxDHxSytkXpABmU',
+        }
+
     };
 
     createMapOptions = (maps) => {
@@ -65,6 +69,7 @@ export default class Map extends Component {
                     center={this.props.location}
                     defaultZoom={this.state.zoom}
                     options={this.createMapOptions}
+                    bootstrapURLKeys={this.state.googleMapSettings}
                 >
                     {this.createAllMarkers(this.props.houses)}
 

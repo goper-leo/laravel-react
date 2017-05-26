@@ -62,9 +62,7 @@ const { mix } = require('laravel-mix');
  */
 mix.disableNotifications();
 
-mix.js(paths.js('app.js'), paths.public('js'))
-   .react(paths.js('test.js'), paths.public('js'))
-   .react(paths.js('body.js'), paths.public('js'));
+mix.react(paths.js('app.js'), paths.public('js'));
 
 mix.sass(paths.sass('app.scss'), paths.public('css'))
    .sass(paths.sass('bootstrap.scss'), paths.public('css'));

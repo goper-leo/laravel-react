@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import ReactDom from 'react-dom';
 import PropTypes from 'prop-types';
 import RangeSlider from 'react-dual-rangeslider';
 

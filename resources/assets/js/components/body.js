@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import ReactDom from 'react-dom';
 import heightify from 'heightify';
 
-import ItemList from './components/body/ItemList';
-import Loading from './components/Loading';
-import Map from './components/body/Map';
+import ItemList from './body/ItemList';
+import Loading from './Loading';
+import Map from './body/Map';
 
 
-class Body extends Component {
+export default class Body extends Component {
 
     state = {
         location: {lat: 7.103602, lng: 125.641840},
@@ -56,6 +56,3 @@ class Body extends Component {
     }
 
 }
-
-
-ReactDom.render(<Body />, document.getElementById('houses-item-container'));

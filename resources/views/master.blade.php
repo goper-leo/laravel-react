@@ -10,29 +10,19 @@
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
         <link rel="stylesheet" href="css/bootstrap.css">
-
         <link href="css/app.css" rel="stylesheet" type="text/css">
+        <link href="vendors/slick-carousel/slick.css" rel="stylesheet" type="text/css">
+        <link href="vendors/slick-carousel/slick-theme.css" rel="stylesheet" type="text/css">
 
-        <script src="vendors/jquery.min.js"></script>
-
-        @yield('inline_css')
     </head>
     <body>
+        <div  id="app">
 
-        @include('widgets.header')
-        <section class="main">
-          <div class="container-fluid">
-            @yield('body')
-          </div>
-        </section>
+        </div>
+        {{-- @include('widgets.header')
+        
+        @include('widgets.footer') --}}
 
-        @include('widgets.footer')
-
-      <script src="js/bootstrap.min.js"></script>
-      <script src="vendors/matchHeight/jquery.matchHeight.js"></script>
-      <script src="vendors/easydropdown/jquery.easydropdown.js"></script>
-      <script src="vendors/bootstrap-sass/bootstrap.min.js"></script>
-      @yield('inline_scripts')
-
+      <script type="text/javascript" src="js/app.js"></script>
     </body>
 </html>
