@@ -14,20 +14,12 @@ class Item extends Component {
     }
 
     //** Return image string
-    getRandomImage = () => {
-        let prefix = this.state.imagePrefix[Math.floor(Math.random() * this.state.imagePrefix.length)];
-        let suffix = this.state.imageSuffix[Math.floor(Math.random() * this.state.imageSuffix.length)];
-        return 'images/houses/' + prefix + '_house' + suffix + '.jpg';
-    }
+    getHouseImages = () => this.props.house.images.map(this.getImage)
 
-    getSliderImages = () => {
-        for (let i = 0; i < 4; i++) {
-            <div><img src={this.getRandomImage()} /></div>
-        }
-    }
+    getImage = (image) => <div key={image.id}><img src={image.path} /></div>
 
     getRandomRating = () => {
-        let rating = this.state.starRatings[Math.floor(Math.random() * this.state.starRatings.length)];
+        let rating = this.props.house.rating;
         let ratings = [];
 
         for (let i=0; i < rating; i++) {
@@ -64,9 +56,7 @@ class Item extends Component {
                     <div className="item-image">
                         <div className="item-slider">
                             <Slider {...sliderSettings}>
-                                <div><img src={this.getRandomImage()} /></div>
-                                <div><img src={this.getRandomImage()} /></div>
-                                <div><img src={this.getRandomImage()} /></div>
+                                {this.getHouseImages()}
                             </Slider>
 
                         </div>
@@ -81,7 +71,7 @@ class Item extends Component {
                         </p>
                         <div className="item-review">
                             {this.getRandomRating()}
-                            100 reviews
+                            {house.reviews} reviews
                         </div>
                     </div>
                 </div>

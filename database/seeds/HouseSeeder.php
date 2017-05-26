@@ -20,7 +20,7 @@ class HouseSeeder extends Seeder
             'long' => '125.641840',
             'price' => rand(1000, 20000),
             'reviews' => rand(10, 1000),
-            'rating' => '100',
+            'rating' => rand(1, 5),
           ],
           [
             'name' => $i . ' Waterfront Insular',
@@ -29,7 +29,7 @@ class HouseSeeder extends Seeder
             'long' => '125.650400',
             'price' => rand(1000, 20000),
             'reviews' => rand(10, 1000),
-            'rating' => '100',
+            'rating' => rand(1, 5),
           ],
           [
             'name' => $i . ' Seda Abreeza',
@@ -38,7 +38,7 @@ class HouseSeeder extends Seeder
             'long' => '125.610773',
             'price' => rand(1000, 20000),
             'reviews' => rand(10, 1000),
-            'rating' => '100',
+            'rating' => rand(1, 5),
           ],
           [
             'name' => $i . ' Jazzy James Hotel',
@@ -47,7 +47,7 @@ class HouseSeeder extends Seeder
             'long' => '125.612844',
             'price' => rand(1000, 20000),
             'reviews' => rand(10, 1000),
-            'rating' => '100',
+            'rating' => rand(1, 5),
           ],
           [
             'name' => $i . ' D Leonor Hotel',
@@ -56,7 +56,7 @@ class HouseSeeder extends Seeder
             'long' => '125.612074',
             'price' => rand(1000, 20000),
             'reviews' => rand(10, 1000),
-            'rating' => '100',
+            'rating' => rand(1, 5),
           ],
           [
             'name' => $i . ' Sychar Garden',
@@ -65,7 +65,7 @@ class HouseSeeder extends Seeder
             'long' => '125.612460',
             'price' => rand(1000, 20000),
             'reviews' => rand(10, 1000),
-            'rating' => '100',
+            'rating' => rand(1, 5),
           ],
           [
             'name' => $i . ' Apo View Hotel',
@@ -74,7 +74,7 @@ class HouseSeeder extends Seeder
             'long' => '125.607617',
             'price' => rand(1000, 20000),
             'reviews' => rand(10, 1000),
-            'rating' => '100',
+            'rating' => rand(1, 5),
           ],
           [
             'name' => $i . ' Marco Polo',
@@ -83,7 +83,7 @@ class HouseSeeder extends Seeder
             'long' => '125.611415',
             'price' => rand(1000, 20000),
             'reviews' => rand(10, 1000),
-            'rating' => '100',
+            'rating' => rand(1, 5),
           ],
           [
             'name' => $i . ' Regency Inn',
@@ -92,7 +92,7 @@ class HouseSeeder extends Seeder
             'long' => '125.614008',
             'price' => rand(1000, 20000),
             'reviews' => rand(10, 1000),
-            'rating' => '100',
+            'rating' => rand(1, 5),
           ],
           [
             'name' => $i . ' The Pinnacle Hotel and Suites',
@@ -101,7 +101,7 @@ class HouseSeeder extends Seeder
             'long' => '125.615253',
             'price' => rand(1000, 20000),
             'reviews' => rand(10, 1000),
-            'rating' => '100',
+            'rating' => rand(1, 5),
           ],
           [
             'name' => $i . ' Hotel Uno',
@@ -110,7 +110,7 @@ class HouseSeeder extends Seeder
             'long' => '125.611653',
             'price' => rand(1000, 20000),
             'reviews' => rand(10, 1000),
-            'rating' => '100',
+            'rating' => rand(1, 5),
           ],
           [
             'name' => $i . ' Jazzy James Hotel',
@@ -119,7 +119,7 @@ class HouseSeeder extends Seeder
             'long' => '125.612844',
             'price' => rand(1000, 20000),
             'reviews' => rand(10, 1000),
-            'rating' => '100',
+            'rating' => rand(1, 5),
           ],
           [
             'name' => $i . ' Nevermind Hotel',
@@ -128,7 +128,7 @@ class HouseSeeder extends Seeder
             'long' => '125.573968',
             'price' => rand(1000, 20000),
             'reviews' => rand(10, 1000),
-            'rating' => '100',
+            'rating' => rand(1, 5),
           ],
           [
             'name' => $i . ' Lorem Ipsum',
@@ -137,7 +137,7 @@ class HouseSeeder extends Seeder
             'long' => '125.580314',
             'price' => rand(1000, 20000),
             'reviews' => rand(10, 1000),
-            'rating' => '100',
+            'rating' => rand(1, 5),
           ],
           [
             'name' => $i . ' Hotel nvidia',
@@ -146,7 +146,7 @@ class HouseSeeder extends Seeder
             'long' => '125.626233',
             'price' => rand(1000, 20000),
             'reviews' => rand(10, 1000),
-            'rating' => '100',
+            'rating' => rand(1, 5),
           ],
           [
             'name' => $i . ' Hotel Mahiwaga',
@@ -155,7 +155,7 @@ class HouseSeeder extends Seeder
             'long' => '125.596766',
             'price' => rand(1000, 20000),
             'reviews' => rand(10, 1000),
-            'rating' => '100',
+            'rating' => rand(1, 5),
           ],
         ];
 

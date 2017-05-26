@@ -23550,20 +23550,16 @@ var Item = function (_Component) {
             imagePrefix: ['a', 'b', 'c', 'd'],
             imageSuffix: ['1', '2', '3'],
             starRatings: [1, 2, 3, 4, 5]
-        }, _this.handleClick = function () {}, _this.getRandomImage = function () {
-            var prefix = _this.state.imagePrefix[Math.floor(Math.random() * _this.state.imagePrefix.length)];
-            var suffix = _this.state.imageSuffix[Math.floor(Math.random() * _this.state.imageSuffix.length)];
-            return 'images/houses/' + prefix + '_house' + suffix + '.jpg';
-        }, _this.getSliderImages = function () {
-            for (var i = 0; i < 4; i++) {
-                _react2.default.createElement(
-                    'div',
-                    null,
-                    _react2.default.createElement('img', { src: _this.getRandomImage() })
-                );
-            }
+        }, _this.handleClick = function () {}, _this.getHouseImages = function () {
+            return _this.props.house.images.map(_this.getImage);
+        }, _this.getImage = function (image) {
+            return _react2.default.createElement(
+                'div',
+                { key: image.id },
+                _react2.default.createElement('img', { src: image.path })
+            );
         }, _this.getRandomRating = function () {
-            var rating = _this.state.starRatings[Math.floor(Math.random() * _this.state.starRatings.length)];
+            var rating = _this.props.house.rating;
             var ratings = [];
 
             for (var i = 0; i < rating; i++) {
@@ -23614,21 +23610,7 @@ var Item = function (_Component) {
                             _react2.default.createElement(
                                 _reactSlick2.default,
                                 sliderSettings,
-                                _react2.default.createElement(
-                                    'div',
-                                    null,
-                                    _react2.default.createElement('img', { src: this.getRandomImage() })
-                                ),
-                                _react2.default.createElement(
-                                    'div',
-                                    null,
-                                    _react2.default.createElement('img', { src: this.getRandomImage() })
-                                ),
-                                _react2.default.createElement(
-                                    'div',
-                                    null,
-                                    _react2.default.createElement('img', { src: this.getRandomImage() })
-                                )
+                                this.getHouseImages()
                             )
                         ),
                         _react2.default.createElement('i', { className: 'save-item fa fa-heart fa-3x' })
@@ -23653,7 +23635,8 @@ var Item = function (_Component) {
                             'div',
                             { className: 'item-review' },
                             this.getRandomRating(),
-                            '100 reviews'
+                            house.reviews,
+                            ' reviews'
                         )
                     )
                 )

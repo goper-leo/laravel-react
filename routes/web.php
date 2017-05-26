@@ -26,7 +26,7 @@ Route::get('/', function () {
 });
 
 Route::get('/houses', function () {
-  $houses = \App\Models\House::take(8)->get();
+  $houses = \App\Models\House::with('images')->take(8)->get();
 
   return response()->json(['houses' => $houses]);
 
