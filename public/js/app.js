@@ -22687,6 +22687,10 @@ var _react = __webpack_require__(209);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactDom = __webpack_require__(125);
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
 var _propTypes = __webpack_require__(215);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
@@ -22730,7 +22734,7 @@ var Price = function (_Component) {
         }, _this.handleClick = function (e) {
             var value = false;
 
-            if (ReactDom.findDOMNode(_this).contains(e.target)) {
+            if (_reactDom2.default.findDOMNode(_this).contains(e.target)) {
                 value = true;
             }
 
@@ -23953,6 +23957,10 @@ var _react = __webpack_require__(209);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactDom = __webpack_require__(125);
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -23983,21 +23991,21 @@ var List = function (_Component) {
     }
 
     _createClass(List, [{
-        key: "render",
+        key: 'render',
         value: function render() {
             var list = this.props.list;
 
 
             return _react2.default.createElement(
-                "li",
-                { className: "list-group-item", onClick: this.handleClick },
+                'li',
+                { className: 'list-group-item', onClick: this.handleClick },
                 list.label,
                 _react2.default.createElement(
-                    "p",
-                    { className: "help-block" },
+                    'p',
+                    { className: 'help-block' },
                     list.details
                 ),
-                _react2.default.createElement("input", { type: "checkbox", checked: this.state.isChecked })
+                _react2.default.createElement('input', { type: 'checkbox', checked: this.state.isChecked })
             );
         }
     }]);
@@ -24037,7 +24045,7 @@ var Room = function (_Component2) {
         }, _this2.handleClick = function (e) {
             var value = false;
 
-            if (ReactDom.findDOMNode(_this2).contains(e.target)) {
+            if (_reactDom2.default.findDOMNode(_this2).contains(e.target)) {
                 value = true;
             }
 
@@ -24054,51 +24062,51 @@ var Room = function (_Component2) {
     }
 
     _createClass(Room, [{
-        key: "componentWillUnmount",
+        key: 'componentWillUnmount',
         value: function componentWillUnmount() {
             // make sure you remove the listener when the component is destroyed
             document.removeEventListener('click', this.handleClick, false);
         }
     }, {
-        key: "render",
+        key: 'render',
         value: function render() {
 
             return _react2.default.createElement(
-                "li",
+                'li',
                 { className: 'dropdown ' + (this.state.open == true ? 'open' : ''), onClick: this.handleClick },
                 _react2.default.createElement(
-                    "a",
+                    'a',
                     null,
-                    "Room Type",
-                    _react2.default.createElement("span", { className: "caret" })
+                    'Room Type',
+                    _react2.default.createElement('span', { className: 'caret' })
                 ),
                 _react2.default.createElement(
-                    "div",
-                    { className: "dropdown-menu room-filter-dropdown" },
+                    'div',
+                    { className: 'dropdown-menu room-filter-dropdown' },
                     _react2.default.createElement(
-                        "ul",
-                        { className: "list-group" },
+                        'ul',
+                        { className: 'list-group' },
                         this.createAllListItems()
                     ),
                     _react2.default.createElement(
-                        "ul",
-                        { className: "list-group" },
+                        'ul',
+                        { className: 'list-group' },
                         _react2.default.createElement(
-                            "li",
-                            { className: "inline-list" },
+                            'li',
+                            { className: 'inline-list' },
                             _react2.default.createElement(
-                                "a",
-                                { href: "#" },
-                                "Cancel"
+                                'a',
+                                { href: '#' },
+                                'Cancel'
                             )
                         ),
                         _react2.default.createElement(
-                            "li",
-                            { className: "inline-list pull-right" },
+                            'li',
+                            { className: 'inline-list pull-right' },
                             _react2.default.createElement(
-                                "a",
-                                { href: "#" },
-                                "Apply"
+                                'a',
+                                { href: '#' },
+                                'Apply'
                             )
                         )
                     )
@@ -24111,7 +24119,7 @@ var Room = function (_Component2) {
 }(_react.Component);
 
 exports.default = Room;
-module.exports = exports["default"];
+module.exports = exports['default'];
 
 /***/ }),
 /* 220 */
@@ -31604,7 +31612,17 @@ var Footer = function (_Component) {
             args[_key] = arguments[_key];
         }
 
-        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Footer.__proto__ || Object.getPrototypeOf(Footer)).call.apply(_ref, [this].concat(args))), _this), _this.handleClick = function (e) {}, _temp), _possibleConstructorReturn(_this, _ret);
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Footer.__proto__ || Object.getPrototypeOf(Footer)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+            open: false
+        }, _this.handleClick = function () {
+            var value = false;
+            if (_this.state.open === false) {
+                value = true;
+            }
+            _this.setState(function (prevState) {
+                return { open: value };
+            });
+        }, _temp), _possibleConstructorReturn(_this, _ret);
     }
 
     _createClass(Footer, [{
@@ -31615,13 +31633,13 @@ var Footer = function (_Component) {
                 null,
                 _react2.default.createElement(
                     "div",
-                    { className: "footer-button btn btn-default", "data-direction": "bottom" },
+                    { className: "footer-button btn btn-default", onClick: this.handleClick },
                     _react2.default.createElement("span", { className: "fa fa-globe" }),
                     " Language and currency"
                 ),
                 _react2.default.createElement(
                     "div",
-                    { className: "footer", style: { display: 'none' } },
+                    { className: 'footer ' + (this.state.open == true ? 'open' : ''), style: { display: this.state.open == true ? 'block' : 'none' } },
                     _react2.default.createElement(
                         "div",
                         { className: "container" },
@@ -31642,7 +31660,7 @@ var Footer = function (_Component) {
                                             { className: "dropdown", name: "" },
                                             _react2.default.createElement(
                                                 "option",
-                                                { value: "1", selected: true },
+                                                { value: "1" },
                                                 "English"
                                             ),
                                             _react2.default.createElement(
@@ -31665,7 +31683,7 @@ var Footer = function (_Component) {
                                             { className: " dropdown", name: "" },
                                             _react2.default.createElement(
                                                 "option",
-                                                { value: "1", selected: true },
+                                                { value: "1" },
                                                 "PHP"
                                             ),
                                             _react2.default.createElement(

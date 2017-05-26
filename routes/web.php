@@ -12,17 +12,7 @@
 */
 
 Route::get('/', function () {
-  $houses = \App\Models\House::paginate(16);
-
-  // Check request if an ajax call
-  if (request()->ajax()) {
-    // True - get view and return
-    $items = view('widgets.house_items', compact('houses'))->render();
-    $paginator = view('widgets.paginator', ['data' => $houses])->render();
-    return response()->json(['items' => $items, 'paginator' => $paginator]);
-  }
-
-  return view('homes', compact('houses'));
+  return view('homes');
 });
 
 Route::get('/houses', function () {

@@ -1,34 +1,40 @@
 import React, { Component } from 'react';
 
 export default class Footer extends Component {
+    state = {
+        open: false,
+    }
 
-
-   handleClick = (e) => {
-
+   handleClick = () => {
+       let value = false;
+       if (this.state.open === false) {
+           value = true;
+       }
+       this.setState((prevState) => ({open: value}));
    };
 
   render() {
     return (
         <footer>
-            <div className="footer-button btn btn-default" data-direction="bottom">
+            <div className="footer-button btn btn-default" onClick={this.handleClick}>
                 <span className="fa fa-globe"></span> Language and currency
             </div>
 
-            <div className="footer" style={{display: 'none'}}>
+            <div className={'footer ' + (this.state.open == true ? 'open' : '')} style={{display: (this.state.open == true ? 'block' : 'none')}}>
                 <div className="container">
                     <div className="row">
                         <div className="col-xs-6 col-sm-3">
                             <div className="footer-portion">
                                 <div className="form-group">
                                     <select className="dropdown" name="">
-                                        <option value="1" selected>English</option>
+                                        <option value="1">English</option>
                                         <option value="2">Chinese</option>
                                         <option value="3">Japanese</option>
                                     </select>
                                 </div>
                                 <div className="form-group">
                                     <select className=" dropdown" name="">
-                                        <option value="1" selected>PHP</option>
+                                        <option value="1">PHP</option>
                                         <option value="2">US Dollar</option>
                                         <option value="3">Yen Japan</option>
                                     </select>
