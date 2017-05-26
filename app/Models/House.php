@@ -17,7 +17,21 @@ class House extends Model
     'description',
     'lat',
     'long',
+    'reviews',
+    'rating',
+
   ];
 
-  public $timestamps = true;
+    public $timestamps = true;
+
+  /**
+   * Get all subscribers
+   *
+   * @return Relationship
+   * @author goper
+   */
+   public function images()
+   {
+       return $this->hasMany('App\Models\HouseImage');
+   }
 }
