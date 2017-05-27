@@ -11,7 +11,7 @@ export default class Footer extends Component {
            value = true;
        }
        this.setState((prevState) => ({open: value}));
-   };
+   }
 
   render() {
     return (
@@ -78,7 +78,7 @@ export default class Footer extends Component {
                             </div>
                         </div>
                     </div>
-                    <button type="button" className="close-footer-btn btn btn-default" name="button"><i className="fa fa-close"></i> Close</button>
+                    <button type="button" onClick={this.handleClick} className="close-footer-btn btn btn-default" name="button"><i className="fa fa-close"></i> Close</button>
                 </div>
             </div>
         </footer>
